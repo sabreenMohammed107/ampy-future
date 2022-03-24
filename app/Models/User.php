@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -21,8 +21,33 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'emp_code',
+        'n_id',
+        'image',
+        'mobile',
+        'emp_no',
+        'job_title',
+        'address',
+        'company_id',
+        'hire_date',
+        'bank_account',
+        'notes',
+        'active',
     ];
+    public function company(){
+        return $this->belongsTo('App\Models\Company', 'company_id');
+    }
 
+
+    public function transation(){
+        return $this->hasMany('App\Models\Transaction','user_id','id')->orderBy("id", "Desc");
+      }
+
+      public function latestTransation()
+      {
+        return $this->hasOne('App\Models\Transaction')->latest();
+        //   return $this->transation()->latest();
+      }
     /**
      * The attributes that should be hidden for serialization.
      *
