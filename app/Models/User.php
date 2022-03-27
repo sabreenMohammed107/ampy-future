@@ -3,14 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use Notifiable, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -19,20 +18,24 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
-        'password',
-        'emp_code',
-        'n_id',
-        'image',
-        'mobile',
-        'emp_no',
-        'job_title',
-        'address',
-        'company_id',
-        'hire_date',
-        'bank_account',
-        'notes',
-        'active',
+    'email',
+    'email_verified_at',
+    'password',
+    'emp_code',
+    'n_id',
+    'image',
+    'mobile',
+    'emp_no',
+    'job_title_ar',
+    'address_ar',
+    'job_title_en',
+    'address_en',
+    'company_id',
+    'hire_date',
+    'bank_account',
+    'notes',
+    'register_approved',
+    'active',
     ];
     public function company(){
         return $this->belongsTo('App\Models\Company', 'company_id');

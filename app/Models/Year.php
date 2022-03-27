@@ -12,4 +12,7 @@ class Year extends Model
         'year',
 
     ];
+    public function months(){
+        return $this->hasMany('App\Models\Month', 'year_id','id');
+    }
 }

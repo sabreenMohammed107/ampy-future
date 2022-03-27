@@ -38,22 +38,18 @@
     </div>
     <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group">
-            <strong>العنوان:</strong>
-            {!! Form::text('address', null, array('class' => 'form-control')) !!}
+            <strong>العنوان عربى:</strong>
+            {!! Form::text('address_ar', null, array('class' => 'form-control')) !!}
         </div>
     </div>
+
     <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group">
-            <strong>كلمه السر:</strong>
-            {!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control')) !!}
+            <strong>العنوان انجليزى:</strong>
+            {!! Form::text('address_en', null, array('class' => 'form-control')) !!}
         </div>
     </div>
-    <div class="col-xs-6 col-sm-6 col-md-6">
-        <div class="form-group">
-            <strong>تأكيد كلمه السر :</strong>
-            {!! Form::password('confirm-password', array('placeholder' => 'Confirm Password','class' => 'form-control','value'=> '{{$user->password}}')) !!}
-        </div>
-    </div>
+
     <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group">
             <strong>الشركات:</strong>
@@ -88,8 +84,15 @@
     </div>
     <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group">
-            <strong>المسمى الوظيفي:</strong>
-            {!! Form::text('job_title', null, array('class' => 'form-control')) !!}
+            <strong>المسمى الوظيفى بالعربي:</strong>
+            {!! Form::text('job_title_ar', null, array('class' => 'form-control')) !!}
+        </div>
+    </div>
+
+    <div class="col-xs-6 col-sm-6 col-md-6">
+        <div class="form-group">
+            <strong>المسمى الوظيفى بالانجليزية:</strong>
+            {!! Form::text('job_title_en', null, array('class' => 'form-control')) !!}
         </div>
     </div>
 

@@ -3,7 +3,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TransactionResource extends JsonResource
+class transForDataResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,9 @@ class TransactionResource extends JsonResource
     {
 
         return [
-            "id"=>$this->id,
             "month"=>MonthResource::make($this->month),
-            'transaction_details'=>TransactionDetailsResource::collection($this->transaction_details),
-            'user_account'=>$this->user->bank_account ?? '',
+            // 'transaction_details'=>TransactionDetailsResource::collection($this->transaction_details),
+            'user'=>$this->user,
         ];
 
     }

@@ -36,6 +36,8 @@
             <li><a href="{{  route('year.index') }}"><i class="fa fa-circle-o"></i> السنوات </a></li>
             <li><a href="{{  route('month.index') }}"><i class="fa fa-circle-o"></i> الشهور </a></li>
             <li><a href="{{  route('faq.index') }}"><i class="fa fa-circle-o"></i> الاسئلة الشائعة </a></li>
+            <li><a href="{{  route('payroll-rules.index') }}"><i class="fa fa-circle-o"></i> قواعد المرتبات </a></li>
+
             <li><a href="{{  route('transaction.index') }}"><i class="fa fa-circle-o"></i> الحركات المالية </a></li>
 
         </ul>
@@ -55,61 +57,11 @@
           </ul>
         </li>
 
-        <li class="treeview">
-            <a href="">
-              <i class="fa fa-edit"></i>
-              <span>معرض الصور</span>
-              <i class="fa fa-angle-left pull-right"></i>
-            </a>
-            <ul class="treeview-menu">
-                <li>
-
-            </ul>
-          </li>
-          <li class="treeview">
-            <a href="">
-              <i class="fa fa-edit"></i>
-              <span>المنتجات</span>
-              <i class="fa fa-angle-left pull-right"></i>
-            </a>
-            <ul class="treeview-menu">
-
-            </ul>
-          </li>
 
 
-        <li class="treeview">
-          <a href="">
-            <i class="fa fa-edit"></i>
-            <span>بيانات العملاء </span>
-            <i class="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul class="treeview-menu">
-
-          </ul>
-        </li>
-        <li class="header">خاص بالوقع</li>
-
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-edit"></i> <span>الموقع</span>
-            <i class="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul class="treeview-menu">
 
 
-        </ul>
-        </li>
 
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-table"></i> <span>رسائل</span>
-            <i class="fa fa-angle-left pull-right"></i>
-          </a>
-          <ul class="treeview-menu">
-
-         </ul>
-        </li>
 
 
       </ul>

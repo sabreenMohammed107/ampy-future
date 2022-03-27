@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bank;
+use App\Models\User_payrol_rule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class BankController extends Controller
+class PayrollRulesController extends Controller
 {
     protected $object;
     protected $viewName;
-    protected $routeName ;
+    protected $routeName;
 
     /**
      * UserController Constructor.
      *
      * @return \Illuminate\Http\Response
      */
-    public function __construct(Bank $object)
+    public function __construct(User_payrol_rule $object)
     {
         $this->middleware('auth');
 
         $this->object = $object;
-        $this->viewName = 'admin.bank.';
-    $this->routeName = 'bank.';
+        $this->viewName = 'admin.payroll-rules.';
+        $this->routeName = 'payroll-rules.';
     }
     /**
      * Display a listing of the resource.
@@ -31,10 +32,9 @@ class BankController extends Controller
      */
     public function index()
     {
-        $rows=Bank::orderBy("created_at", "Desc")->get();
+        $rows = User_payrol_rule::orderBy("created_at", "Desc")->get();
 
-
-        return view($this->viewName.'index', compact('rows'));
+        return view($this->viewName . 'index', compact('rows'));
     }
 
     /**
@@ -66,7 +66,8 @@ class BankController extends Controller
      */
     public function show($id)
     {
-        //
+        $row = User_payrol_rule::findOrFail($id);
+        return view($this->viewName . 'edit', compact('row'));
     }
 
     /**
@@ -77,9 +78,7 @@ class BankController extends Controller
      */
     public function edit($id)
     {
-        $row = Bank::where('id', '=', $id)->first();
-
-        return view($this->viewName . 'edit', compact('row'));
+        //
     }
 
     /**
@@ -91,18 +90,21 @@ class BankController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $input = $request->except(['_token','logo']);
+        try{
+        $pay =User_payrol_rule::where('id',$id)->first();
+        $pay->basic_salary = $request->get('basic_salary');
+        $pay->settlements = $request->get('settlements');
+        $pay->allowances = $request->get('allowances');
+        $pay->taxes = $request->get('taxes');
+        $pay->insurance = $request->get('insurance');
+            $pay->update();
+            return redirect()->route($this->routeName . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
 
-        if ($request->hasFile('logo')) {
-            $attach_image = $request->file('logo');
+        } catch (\Exception$e) {
+                     return redirect()->route($this->routeName.'index')->with('flash_success', $e->getMessage());
 
-            $input['logo'] = $this->UplaodImage($attach_image);
+            // return redirect()->route($this->routeName . 'index')->with('flash_danger', 'خطأ ...  !!!');
         }
-
-
-
-    $this->object::findOrFail($id)->update($input);
-return redirect()->back()->with('flash_success', 'تم الحفظ بنجاح');
     }
 
     /**
@@ -115,26 +117,4 @@ return redirect()->back()->with('flash_success', 'تم الحفظ بنجاح');
     {
         //
     }
-
-     /* uplaud image
-       */
-      public function UplaodImage($file_request)
-      {
-          //  This is Image Info..
-          $file = $file_request;
-          $name = $file->getClientOriginalName();
-          $ext = $file->getClientOriginalExtension();
-          $size = $file->getSize();
-          $path = $file->getRealPath();
-          $mime = $file->getMimeType();
-
-          // Rename The Image ..
-          $imageName = $name;
-          $uploadPath = public_path('uploads/banks');
-
-          // Move The image..
-          $file->move($uploadPath, $imageName);
-
-          return $imageName;
-      }
 }

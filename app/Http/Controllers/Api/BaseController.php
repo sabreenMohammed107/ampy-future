@@ -28,6 +28,18 @@ class BaseController extends Controller
 
 
     /**
+     * success with out data
+     */
+    public function successResponse($message = null){
+        $success = [
+            'status' => true,
+            'message' => $message,
+
+        ];
+
+        return response()->json($success, 200);
+    }
+    /**
      * return error response.
      *
      * @return \Illuminate\Http\Response

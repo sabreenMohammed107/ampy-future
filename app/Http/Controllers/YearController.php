@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Month;
 use App\Models\Year;
-use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 class YearController extends Controller
 {
     protected $object;
@@ -54,10 +57,31 @@ class YearController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->except(['_token']);
+        try
+        {
+            // Disable foreign key checks!
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        $this->object::create($input);
-        return redirect()->route($this->routeName.'index')->with('flash_success', 'تم الحفظ بنجاح');
+            $input = $request->except(['_token']);
+
+            $year = $this->object::create($input);
+            $months = array("Jan" => "يناير", "Feb" => "فبراير", "Mar" => "مارس", "Apr" => "أبريل", "May" => "مايو", "Jun" => "يونيو", "Jul" => "يوليو", "Aug" => "أغسطس", "Sep" => "سبتمبر", "Oct" => "أكتوبر", "Nov" => "نوفمبر", "Dec" => "ديسمبر");
+            foreach ($months as $en => $ar) {
+                $month = new Month();
+                $month->month_ar = $ar;
+                $month->month_en = $en;
+                $month->year_id = $year->id;
+                $month->save();
+            }
+            DB::commit();
+            // Enable foreign key checks!
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            return redirect()->route($this->routeName . 'index')->with('flash_success', 'تم الحفظ بنجاح');
+        } catch (\Throwable$e) {
+            DB::rollback();
+
+            return redirect()->back()->withInput()->with('flash_danger', $e->getMessage());
+        }
     }
 
     /**
@@ -96,7 +120,7 @@ class YearController extends Controller
         $input = $request->except(['_token']);
 
         $this->object::findOrFail($id)->update($input);
-        return redirect()->route($this->routeName.'index')->with('flash_success', 'تم الحفظ بنجاح');
+        return redirect()->route($this->routeName . 'index')->with('flash_success', 'تم الحفظ بنجاح');
     }
 
     /**
@@ -107,18 +131,23 @@ class YearController extends Controller
      */
     public function destroy($id)
     {
-        $row=Year::where('id',$id)->first();
+        $row = Year::where('id', $id)->first();
         // Delete File ..
 
         try {
-
+            // $row->months->delete();
+            // iterate through the Collection
+            foreach ($row->months as $month) {
+                $month->delete();
+            }
             $row->delete();
+
             return redirect()->back()->with('flash_success', 'تم الحذف بنجاح !');
 
         } catch (QueryException $q) {
-            return redirect()->back()->withInput()->with('flash_danger', $q->getMessage());
 
-            // return redirect()->back()->with('flash_danger', 'هذه القضية مربوطه بجدول اخر ..لا يمكن المسح');
+            // return redirect()->route($this->routeName.'index')->with('flash_success', $q->getMessage());
+            return redirect()->back()->with('flash_danger', 'هذة السنة مربوطه بحركات مالية ..لا يمكن المسح');
         }
     }
 }

@@ -28,8 +28,14 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="">اسم البنك</label>
-                                        <input type="text" name="name" value="{{$row->name}}" class="form-control" id="">
+                                        <label for="">اسم البنك بالعربى</label>
+                                        <input type="text" name="name_ar" value="{{$row->name_ar}}" class="form-control" id="">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="">اسم البنك بالانجليزية</label>
+                                        <input type="text" name="name_en" value="{{$row->name_en}}" class="form-control" id="">
                                     </div>
                                 </div>
 

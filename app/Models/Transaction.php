@@ -28,5 +28,8 @@ class Transaction extends Model
         return $this->hasMany('App\Models\Transaction_detail');
     }
 
-
+    // public function account()
+    // {
+    //     return $this->user->attributes['bank_account'];
+    // }
 }

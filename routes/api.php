@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ContactController;
+use App\Http\Controllers\Api\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -23,5 +25,11 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::middleware('auth:api')->group( function () {
+    Route::post('token-update', [AuthController::class, 'tokenUpdate']);
+    Route::post('all-notifications', [AuthController::class, 'allNofications']);
+    Route::post('all-transactions', [TransactionController::class, 'allTransactions']);
+    Route::get('single-transactions/{id}', [TransactionController::class, 'singleTransactions']);
+    Route::get('contact-us', [ContactController::class, 'getContact']);
+    Route::post('send-msg', [ContactController::class, 'suggest']);
 
 });

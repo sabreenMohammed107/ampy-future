@@ -24,7 +24,7 @@
                         <div class="col-sm-12">
                         <div class="form-group">
                             <label  >{{ __('  السنه ') }}</label>
-                                <input type="text" id="newTitle" name="year" value="{{old('year')}}" class="form-control"
+                                <input type="number" id="newTitle" name="year" value="{{old('year')}}" class="form-control"
                                    placeholder=" السنة">
                             </div>
                         </div>

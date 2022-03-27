@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('user_payrol_rules', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->string('subject')->nullable();
-            $table->text('message')->nullable();
-            $table->dateTime('suggest_date',0)->nullable();
+            $table->double('basic_salary',11,2)->nullable();
+            $table->double('settlements',11,2)->nullable();
+            $table->double('allowances',11,2)->nullable();
+            $table->double('taxes',11,2)->nullable();
+            $table->double('insurance',11,2)->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('user_payrol_rules');
     }
 };

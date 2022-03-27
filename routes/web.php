@@ -4,6 +4,7 @@ use App\Http\Controllers\BankController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\MonthController;
+use App\Http\Controllers\PayrollRulesController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\YearController;
@@ -37,6 +38,12 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::resource('month', MonthController::class);
     Route::resource('faq', FaqController::class);
     Route::resource('transaction', TransactionController::class);
+    Route::post('userFinance',[UsersController::class,'userFinance'])->name('userFinance');
+    Route::resource('payroll-rules', PayrollRulesController::class);
+//dynamicTransaction.fetch
+Route::get('dynamicTransaction/fetch', [TransactionController::class,'yearData'])->name('dynamicTransaction.fetch');
+//updateDetailsValues
+Route::get('updateDetailsValues', [TransactionController::class,'updateDetails'])->name('updateDetailsValues');
 
 });
 

@@ -24,16 +24,30 @@
               @csrf
                   <div class="box-body">
 
+
                     <div class="col-sm-12">
                         <div class="form-group">
-                            <label for=""> السؤال</label>
-                            <textarea class="form-control " name="question">{{$row->question}}</textarea>                        </div>
+                            <label for=""> السؤال بالعربى</label>
+                            <textarea class="form-control " name="question_ar">{{$row->question_ar}}</textarea>                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for=""> السؤال بالانجليزية</label>
+                            <textarea class="form-control " name="question_en">{{$row->question_en}}</textarea>                        </div>
                     </div>
                     <div class="col-sm-12">
                         <div class="form-group">
-                            <label for="">  الاجابة</label>
-                            <textarea class="form-control " name="answer">{{$row->answer}}</textarea>                        </div>
+                            <label for="">  الاجابه بالعربي</label>
+                            <textarea class="form-control " name="answer_ar">{{$row->answer_ar}}</textarea>                        </div>
                     </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">  الاجابة بالانجليزية</label>
+                            <textarea class="form-control " name="answer_en">{{$row->answer_en}}</textarea>                        </div>
+                    </div>
+
+
 
 
 

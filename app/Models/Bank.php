@@ -9,7 +9,8 @@ class Bank extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name',
+        'name_ar',
+    'name_en',
         'logo',
 
     ];

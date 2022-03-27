@@ -23,13 +23,24 @@
 
                     <div class="col-sm-12">
                         <div class="form-group">
-                            <label for=""> السؤال</label>
-                            <textarea class="form-control " name="question">{{old('question')}}</textarea>                        </div>
+                            <label for=""> السؤال بالعربى</label>
+                            <textarea class="form-control " name="question_ar">{{old('question_ar')}}</textarea>                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for=""> السؤال بالانجليزية</label>
+                            <textarea class="form-control " name="question_en">{{old('question_en')}}</textarea>                        </div>
                     </div>
                     <div class="col-sm-12">
                         <div class="form-group">
-                            <label for="">  الاجابة</label>
-                            <textarea class="form-control " name="answer">{{old('answer')}}</textarea>                        </div>
+                            <label for="">  الاجابه بالعربي</label>
+                            <textarea class="form-control " name="answer_ar">{{old('answer_ar')}}</textarea>                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label for="">  الاجابة بالانجليزية</label>
+                            <textarea class="form-control " name="answer_en">{{old('answer_en')}}</textarea>                        </div>
                     </div>
 
 

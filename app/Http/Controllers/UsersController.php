@@ -5,35 +5,32 @@ namespace App\Http\Controllers;
 // use App\Models\Branch;
 
 use App\Models\Company;
-use Illuminate\Http\Request;
-// use Spatie\Permission\Models\Role;
 use App\Models\User;
-use DB;
-use Hash;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
+// use Spatie\Permission\Models\Role;
+use App\Models\User_payrol_rule;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UsersController extends Controller
 {
-   // This is for General Class Variables.
-   protected $model;
-   protected $view;
-   protected $route;
+    // This is for General Class Variables.
+    protected $model;
+    protected $view;
+    protected $route;
 
-   /**
-    * UserController Constructor.
-    *
-    * @return \Illuminate\Http\Response
-    */
-   public function __construct(User $model)
-   {
-       $this->middleware('auth');
+    /**
+     * UserController Constructor.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __construct(User $model)
+    {
+        $this->middleware('auth');
 
-       $this->model = $model;
-       $this->view = 'admin.users.';
-       $this->route = 'users.';
-   }
+        $this->model = $model;
+        $this->view = 'admin.users.';
+        $this->route = 'users.';
+    }
 
     /**
      * Display a listing of the resource.
@@ -44,7 +41,7 @@ class UsersController extends Controller
     {
         $data = $this->model::get();
 
-        return view($this->view.'index', compact('data'));
+        return view($this->view . 'index', compact('data'));
     }
 
     /**
@@ -55,8 +52,8 @@ class UsersController extends Controller
     public function create()
     {
 
-$companies=Company::pluck('name','id')->all();
-        return view($this->view.'add',compact('companies'));
+        $companies = Company::pluck('name_ar', 'id')->all();
+        return view($this->view . 'add', compact('companies'));
     }
 
     /**
@@ -67,46 +64,35 @@ $companies=Company::pluck('name','id')->all();
      */
     public function store(Request $request)
     {
-          // Validating fields
-        // $this->validate($request, [
-        //     'f_name' => 'required',
-        //     'l_name' => 'required',
-        //     'email' => 'required|email|unique:users',
-        //     'phone' => 'required|unique:users',
-        //     'username' => 'required|unique:users',
-        //     'password' => 'required',
-        //     'roles' => 'required',
-        // ],
-        // [
-        //     'f_name.required' => 'حقل الاسم الاول مطلوب',
-        //     'l_name.required' => 'حقل الاسم الاخير مطلوب',
-        //     'username.required' => 'حقل اسم المستخدم مطلوب',
-        //     'phone.required' => 'حقل التليفون مطلوب',
-        //     'email.required' => 'حقل البريد الالكترونى مطلوب',
-        //     'password.required' => 'حقل كلمه السر مطلوب',
-        //     'roles.required' => 'حقل الادوار مطلوب',
-        //     'email.unique' => 'البريد الالكترونى  موجود بالفعل',
-        //     'phone.unique' => 'التليفون موجود بالفعل',
-        //     'username.unique' => 'اسم المستخدم موجود بالفعل',
-        // ]);
 
-        try {
+        try
+        {
+            // Disable foreign key checks!
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             $input = $request->all();
             $input['password'] = \Hash::make($input['password']);
-            $input['company_id']=$request->input('company');
+            $input['company_id'] = $request->input('company');
             if ($request->hasFile('image')) {
                 $attach_image = $request->file('image');
 
                 $input['image'] = $this->UplaodImage($attach_image);
             }
             $user = $this->model::create($input);
+//user payroll
+            $pay = new User_payrol_rule();
+            $pay->user_id = $user->id;
+            $pay->save();
 
-
+            DB::commit();
+            // Enable foreign key checks!
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
             // Display a successful message ...
-            return redirect()->route($this->route.'index')->with('flash_success','تم إنشاء المستخدم بنجاح');
+            return redirect()->route($this->route . 'index')->with('flash_success', 'تم إنشاء المستخدم بنجاح');
 
-        } catch (\Exception $e){
-            return redirect()->route($this->route.'index')->with('flash_danger','خطأ ... لا يمكن الحذف حتي لا تتأثر البيانات الأخري بعملية الحذف !!!');
+        } catch (\Exception$e) {
+            DB::rollback();
+
+            return redirect()->route($this->route . 'index')->with('flash_danger', 'خطأ ...  !!!');
         }
     }
 
@@ -118,9 +104,26 @@ $companies=Company::pluck('name','id')->all();
      */
     public function show($id)
     {
-        //
+        $row = $this->model::findOrFail($id);
+        return view($this->view . 'credit', compact('row'));
     }
 
+    public function userFinance(Request $request)
+    {
+        try {
+            $pay = User_payrol_rule::where('user_id', $request->get('user_id'))->first();
+            $pay->basic_salary = $request->get('basic_salary');
+            $pay->settlements = $request->get('settlements');
+            $pay->allowances = $request->get('allowances');
+            $pay->taxes = $request->get('taxes');
+            $pay->insurance = $request->get('insurance');
+            $pay->update();
+            return redirect()->route($this->route . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
+
+        } catch (\Exception$e) {
+            return redirect()->route($this->route . 'index')->with('flash_danger', 'خطأ ...  !!!');
+        }
+    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -131,12 +134,9 @@ $companies=Company::pluck('name','id')->all();
     {
         $user = $this->model::findOrFail($id);
         $user->password = null;
-        $companies=Company::pluck('name','id')->all();
-        // $roles = Role::pluck('name','name')->all();
-        // $userRole = $user->roles->pluck('name','name')->all();
-        // $branches = Branch::pluck('name','id')->all();
-        // $userBranch = $user->branches->pluck('name','name')->all();
-        return view($this->view.'edit', compact('user','companies'));
+        $companies = Company::pluck('name_ar', 'id')->all();
+
+        return view($this->view . 'edit', compact('user', 'companies'));
 
     }
 
@@ -149,37 +149,17 @@ $companies=Company::pluck('name','id')->all();
      */
     public function update(Request $request, $id)
     {
- // Validating fields
-        // $this->validate($request, [
-        //     'f_name' => 'required',
-        //     'l_name' => 'required',
-        //     'email' => 'required|email|unique:users,email,'.$id,
-        //     'phone' => 'required|unique:users,phone,'.$id,
-        //     'username' => 'required|string|unique:users,username,'.$id,
 
-        //     'roles' => 'required',
-        // ],
-        // [
-        //     'f_name.required' => 'حقل الاسم الاول مطلوب',
-        //     'l_name.required' => 'حقل الاسم الاخير مطلوب',
-        //     'username.required' => 'حقل اسم المستخدم مطلوب',
-        //     'phone.required' => 'حقل التليفون مطلوب',
-        //     'email.required' => 'حقل البريد الالكترونى مطلوب',
-
-        //     'roles.required' => 'حقل الادوار مطلوب',
-        //     'email.unique' => 'البريد الالكترونى  موجود بالفعل',
-        //     'phone.unique' => 'التليفون موجود بالفعل',
-        //     'username.unique' => 'اسم المستخدم موجود بالفعل',
-        // ]);
         try {
 
             $input = $request->all();
-            if($input['password'] != null)
+            if ($input['password'] != null) {
                 $input['password'] = \Hash::make($input['password']);
-            else
+            } else {
                 unset($input['password']);
+            }
 
-            $input['company_id']=$request->input('company');
+            $input['company_id'] = $request->input('company');
             if ($request->hasFile('image')) {
                 $attach_image = $request->file('image');
 
@@ -188,14 +168,11 @@ $companies=Company::pluck('name','id')->all();
             $user = $this->model::findOrFail($id);
             $user->update($input);
 
-            // \DB::table('model_has_roles')->where('model_id',$id)->delete();
-            // $user->assignRole($request->input('roles'));
-            // $user->branches()->sync($request->input('branches'));
             // Display a successful message ...
-            return redirect()->route($this->route.'index')->with('flash_success','تم تعديل بيانات المستخدم بنجاح');
+            return redirect()->route($this->route . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
 
-        } catch (\Exception $e){
-            return redirect()->route($this->route.'index')->with('flash_danger','خطأ ... لا يمكن الحذف حتي لا تتأثر البيانات الأخري بعملية الحذف !!!');
+        } catch (\Exception$e) {
+            return redirect()->route($this->route . 'index')->with('flash_danger', 'خطأ ...  !!!');
         }
     }
 
@@ -213,34 +190,32 @@ $companies=Company::pluck('name','id')->all();
             $account->delete();
 
             // Display a successful message ...
-            return redirect()->route($this->route.'index')->with('flash_success','تم حذف بيانات المستخدم بنجاح');
-        }
-        catch (\Illuminate\Database\QueryException $e)
-        {
+            return redirect()->route($this->route . 'index')->with('flash_success', 'تم حذف بيانات المستخدم بنجاح');
+        } catch (\Illuminate\Database\QueryException$e) {
             // Display a successful message ...
-            return redirect()->route($this->route.'index')->with('flash_danger','خطأ ... لا يمكن الحذف حتي لا تتأثر البيانات الأخري بعملية الحذف !!!');
+            return redirect()->route($this->route . 'index')->with('flash_danger', 'خطأ ... لا يمكن الحذف حتي لا تتأثر البيانات الأخري بعملية الحذف !!!');
         }
     }
 
-     /* uplaud image
-       */
-      public function UplaodImage($file_request)
-      {
-          //  This is Image Info..
-          $file = $file_request;
-          $name = $file->getClientOriginalName();
-          $ext = $file->getClientOriginalExtension();
-          $size = $file->getSize();
-          $path = $file->getRealPath();
-          $mime = $file->getMimeType();
+    /* uplaud image
+     */
+    public function UplaodImage($file_request)
+    {
+        //  This is Image Info..
+        $file = $file_request;
+        $name = $file->getClientOriginalName();
+        $ext = $file->getClientOriginalExtension();
+        $size = $file->getSize();
+        $path = $file->getRealPath();
+        $mime = $file->getMimeType();
 
-          // Rename The Image ..
-          $imageName = $name;
-          $uploadPath = public_path('uploads/users');
+        // Rename The Image ..
+        $imageName = $name;
+        $uploadPath = public_path('uploads/users');
 
-          // Move The image..
-          $file->move($uploadPath, $imageName);
+        // Move The image..
+        $file->move($uploadPath, $imageName);
 
-          return $imageName;
-      }
+        return $imageName;
+    }
 }

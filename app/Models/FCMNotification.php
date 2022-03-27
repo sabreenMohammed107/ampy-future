@@ -10,7 +10,9 @@ class FCMNotification extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'title',
-        'body',
+        'title_ar',
+    'title_en',
+    'body_ar',
+    'body_en',
     ];
 }

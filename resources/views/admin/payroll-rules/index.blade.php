@@ -1,6 +1,6 @@
 @extends('layout.web')
 
-@section('title', 'الأسئلة الشائعة')
+@section('title', 'قواعد المرتبات')
 
 @section('content')
 
@@ -10,7 +10,7 @@
         <div class="card" style="background: #ffffff;box-shadow: 0 1px 1px rgb(0 0 0 / 10%);">
             <div class="box-header">
                 <h3 class="box-title">بيانات الرئيسية</h3>
-                <a href="{{ route('faq.create') }}" class="btn btn-info btn-lg pull-right"> اضافة </a>
+                {{-- <a href="{{ route('year.create') }}" class="btn btn-info btn-lg pull-right"> اضافة </a> --}}
 
             </div>
 
@@ -21,11 +21,13 @@
                         <th data-field="state" data-checkbox="false"></th>
                         <th data-field="id">#</th>
 
-                        <th>السؤال عربى</th>
-                        <th>الاجابة عربى</th>
-                        <th>السؤال انجليزى</th>
-                        <th>الاجابة انجليزى</th>
-
+                        <th>كود الموظف</th>
+                        <th>اسم الموظف</th>
+                        <th> المرتب الاساسى</th>
+                        <th>التسويات </th>
+                        <th> البدلات</th>
+                        <th> الضرائب</th>
+                        <th> التأمينات</th>
                         <th>الاجراءات</th>
                         </tr>
                     </thead>
@@ -35,25 +37,28 @@
                                 <td></td>
                                 <td>{{ $index + 1 }}</td>
 
-                                <td>{{ $row->question_ar }}</td>
-                                <td>{{ $row->answer_ar }}</td>
+                                <td>{{ $row->user->emp_code ?? '' }}</td>
+                                <td>{{ $row->user->name ?? '' }}</td>
+                                <td>{{ $row->basic_salary ?? '' }}</td>
+                                <td>{{ $row->settlements ?? '' }}</td>
+                                <td>{{ $row->allowances ?? '' }}</td>
+                                <td>{{ $row->taxes ?? '' }}</td>
+                                <td>{{ $row->insurance ?? '' }}</td>
 
-                                <td>{{ $row->question_en }}</td>
-                                <td>{{ $row->answer_en }}</td>
 
                                 <td>
                                     <div class="btn-group">
 
 
-                                        <a href="{{ route('faq.edit', $row->id) }}">
-                                            <p class=" fa fa-edit"></p>
+                                        <a href="{{ route('payroll-rules.show', $row) }}">
+                                            <p class="fa fa-credit-card"></p>
                                         </a>
 
 
-                                        <a href="#del{{ $row->id }}" data-toggle="modal"
+                                        {{-- <a href="#del{{ $row->id }}" data-toggle="modal"
                                             data-target="#del{{ $row->id }}">
                                             <p class="fa  fa-times"></p>
-                                        </a>
+                                        </a> --}}
 
                                     </div>
                                 </td>
@@ -65,7 +70,7 @@
                             <div class="modal modal-danger" id="del{{ $row->id }}" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
-                                    <form action="{{ route('faq.destroy', $row->id) }}" method="POST">
+                                    <form action="{{ route('year.destroy', $row->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <div class="modal-content">
@@ -98,7 +103,7 @@
         <!-- /.card -->
     </div>
     <!-- /.col -->
-    </div>
+</div>
     <!-- /.row -->
 @endsection
 @section('scripts')

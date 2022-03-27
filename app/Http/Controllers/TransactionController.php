@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Month;
 use App\Models\Transaction;
+use App\Models\Transaction_detail;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Database\QueryException;
+use App\Models\User_payrol_rule;
+use App\Models\Year;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Psy\Readline\Transient;
+
 class TransactionController extends Controller
 {
     protected $object;
@@ -34,9 +40,14 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $rows = Transaction::orderBy("created_at", "Desc")->get();
+        $year = Year::where('year', now()->year)->first();
+        $rows = [];
+        if ($year) {
+            $rows = Month::where('year_id', $year->id)->orderBy("created_at", "Desc")->get();
 
-        return view($this->viewName . 'index', compact('rows'));
+        }
+        $years = Year::all();
+        return view($this->viewName . 'index', compact('rows', 'years'));
     }
 
     /**
@@ -46,10 +57,10 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        $months=Month::all();
-        $users=User::all();
+        $months = Month::all();
+        $users = User::all();
 
-        return view($this->viewName . 'add',compact('months','users'));
+        return view($this->viewName . 'add', compact('months', 'users'));
     }
 
     /**
@@ -60,12 +71,45 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        $input = $request->except(['_token','transaction_date']);
 
 
-        $input['transaction_date'] = Carbon::parse($request->get('transaction_date'));
-    Transaction::create($input);
-    return redirect()->route($this->routeName.'index')->with('flash_success', 'تم الحفظ بنجاح');
+        try
+        {
+            // Disable foreign key checks!
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+
+            // save transactions && details
+            $users = User_payrol_rule::all();
+            foreach ($users as $user) {
+                $transaction = new Transaction();
+                $transaction->transaction_date = Carbon::now();
+                $transaction->user_id = $user->id;
+                $transaction->month_id = $request->get('month_id');
+                $transaction->payroll_status = 2;
+                $transaction->revision_status = 0;
+                $transaction->save();
+                // details
+                $details = new Transaction_detail();
+                $details->transaction_id = $transaction->id;
+                $details->basic_salary = $user->basic_salary;
+                $details->settlements = $user->settlements;
+                $details->allowances = $user->allowances;
+                $details->taxes = $user->taxes;
+                $details->insurance = $user->insurance;
+                $details->save();
+
+            }
+            DB::commit();
+            // Enable foreign key checks!
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+            // Display a successful message ...
+            return redirect()->route($this->routeName . 'index')->with('flash_success', 'تم الحفظ بنجاح');
+
+        } catch (\Exception$e) {
+            DB::rollback();
+            return redirect()->route($this->routeName . 'index')->with($e->getMessage());
+        }
+
     }
 
     /**
@@ -76,7 +120,9 @@ class TransactionController extends Controller
      */
     public function show($id)
     {
-        //
+        $row = Month::where('id', '=', $id)->first();
+$transactions=Transaction::where('month_id',$id)->get();
+        return view($this->viewName . 'veiw', compact('row','transactions'));
     }
 
     /**
@@ -88,9 +134,9 @@ class TransactionController extends Controller
     public function edit($id)
     {
         $row = Transaction::where('id', '=', $id)->first();
-        $months=Month::all();
-        $users=User::all();
-        return view($this->viewName . 'edit', compact('row','months','users'));
+        $months = Month::all();
+        $users = User::all();
+        return view($this->viewName . 'edit', compact('row', 'months', 'users'));
     }
 
     /**
@@ -102,12 +148,11 @@ class TransactionController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $input = $request->except(['_token','transaction_date']);
-
+        $input = $request->except(['_token', 'transaction_date']);
 
         $input['transaction_date'] = Carbon::parse($request->get('transaction_date'));
         Transaction::findOrFail($id)->update($input);
-    return redirect()->route($this->routeName.'index')->with('flash_success', 'تم الحفظ بنجاح');
+        return redirect()->route($this->routeName . 'index')->with('flash_success', 'تم الحفظ بنجاح');
     }
 
     /**
@@ -118,7 +163,7 @@ class TransactionController extends Controller
      */
     public function destroy($id)
     {
-        $row=Transaction::where('id',$id)->first();
+        $row = Transaction::where('id', $id)->first();
         // Delete File ..
 
         try {
@@ -131,5 +176,36 @@ class TransactionController extends Controller
 
             // return redirect()->back()->with('flash_danger', 'هذه القضية مربوطه بجدول اخر ..لا يمكن المسح');
         }
+    }
+
+    public function yearData(Request $request)
+    {
+
+        $rows = [];
+
+        if (!empty($request->get("value"))) {
+            $rows = Month::where('year_id', $request->get("value"))->orderBy("created_at", "Desc")->get();
+
+        }
+        return view($this->viewName . 'preIndex', compact('rows'))->render();
+    }
+
+
+    public function updateDetails(Request $request){
+        try{
+            $pay =Transaction_detail::where('transaction_id',$request->get("transaction_id"))->first();
+            $pay->basic_salary = $request->get('basic_salary');
+            $pay->settlements = $request->get('settlements');
+            $pay->allowances = $request->get('allowances');
+            $pay->taxes = $request->get('taxes');
+            $pay->insurance = $request->get('insurance');
+                $pay->update();
+                return redirect()->route($this->routeName . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
+
+            } catch (\Exception$e) {
+                         return redirect()->route($this->routeName.'index')->with('flash_success', $e->getMessage());
+
+                // return redirect()->route($this->routeName . 'index')->with('flash_danger', 'خطأ ...  !!!');
+            }
     }
 }

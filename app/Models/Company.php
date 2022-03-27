@@ -9,12 +9,19 @@ class Company extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'name',
+        'name_ar',
+        'name_en',
         'logo',
-        'who_we_are',
-        'what_we_do',
-        'ploicy',
         'bank_id',
+        'who_we_are_ar',
+        'who_we_are_en',
+        'what_we_do_ar',
+        'what_we_do_en',
+        'ploicy_ar',
+        'ploicy_en',
         'active',
+        'mobile',
+        'email',
+        'website',
     ];
 }

@@ -24,7 +24,7 @@ class UserDataResource extends JsonResource
             "register_approved" => $this->register_approved ?? 0,
             'transaction'=>TransactionResource::collection($this->transation->take(3)),
              "latestTransaction"=> TransactionResource::make($this->latestTransation),
-
+'accessToken'=>$this->accessToken,
                         // "latestTransaction"=> $this->latestTransation,
 
         ];
