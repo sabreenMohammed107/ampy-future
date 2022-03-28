@@ -29,7 +29,7 @@ class TransactionController extends BaseController
         if ($transactions->count()>0) {
             return $this->sendResponse(TransactionResource::collection($transactions), 'كل المعاملات المالية');
         } else {
-            return $this->successResponse('لا يوجد معاملات حتى الان');
+            return $this->sendResponse(TransactionResource::collection($transactions),'لا يوجد معاملات حتى الان');
         }
 
     }
