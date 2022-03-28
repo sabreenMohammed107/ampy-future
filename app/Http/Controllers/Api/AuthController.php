@@ -37,8 +37,7 @@ class AuthController extends BaseController
             return $this->convertErrorsToString($validator->messages());
         }
 
-        try
-        {
+
             $input = $request->all();
             $input['password'] = bcrypt($input['password']);
             $input['register_approved'] = 0;
