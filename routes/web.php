@@ -44,6 +44,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
 Route::get('dynamicTransaction/fetch', [TransactionController::class,'yearData'])->name('dynamicTransaction.fetch');
 //updateDetailsValues
 Route::get('updateDetailsValues', [TransactionController::class,'updateDetails'])->name('updateDetailsValues');
+//sendNotification
+Route::get('sendNotification', [TransactionController::class,'sendNotification'])->name('sendNotification');
 
 });
 

@@ -30,7 +30,7 @@
                             <a href="{{ route('transaction.show', $row->id) }}" title="عرض كشف حساب">
                                 <p class=" fa fa-eye"></p>
                             </a>
-                            <a href="#" title=" المراجعة">
+                            <a href="{{route('sendNotification')}}" title=" المراجعة">
                                 <p class=" fa fa-edit"></p>
                             </a>
                         @else
