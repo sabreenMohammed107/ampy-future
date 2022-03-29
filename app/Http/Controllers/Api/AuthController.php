@@ -34,6 +34,7 @@ class AuthController extends BaseController
                 'mobile' => 'required|unique:users',
                 'password' => 'required',
                 'c_password' => 'required|same:password',
+
             ]);
 
             if ($validator->fails()) {
