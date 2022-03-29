@@ -32,4 +32,11 @@ Route::middleware('auth:api')->group( function () {
     Route::get('contact-us', [ContactController::class, 'getContact']);
     Route::post('send-msg', [ContactController::class, 'suggest']);
 
+
+    //notifications APIs
+    Route::get('list-notifications', [TransactionController::class, 'listNofications']);
+   // Route::get('notification/{id}', [TransactionController::class, 'singleNofication']);
+    Route::post('update_notifications', [TransactionController::class, 'updateNotifications']);
+  
+
 });

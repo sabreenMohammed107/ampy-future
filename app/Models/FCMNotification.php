@@ -14,5 +14,6 @@ class FCMNotification extends Model
     'title_en',
     'body_ar',
     'body_en',
+    'seen',
     ];
 }
