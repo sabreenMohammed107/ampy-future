@@ -10,9 +10,10 @@ use App\Models\User;
 use App\Models\User_payrol_rule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
 use Validator;
-use Illuminate\Support\Facades\DB;
+
 class AuthController extends BaseController
 {
     /**
@@ -26,17 +27,16 @@ class AuthController extends BaseController
         {
             // Disable foreign key checks!
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-        $validator = Validator::make($request->all(), [
-            'emp_code' => 'required|unique:users',
-            'mobile' => 'required|unique:users',
-            'password' => 'required',
-            'c_password' => 'required|same:password',
-        ]);
+            $validator = Validator::make($request->all(), [
+                'emp_code' => 'required|unique:users',
+                'mobile' => 'required|unique:users',
+                'password' => 'required',
+                'c_password' => 'required|same:password',
+            ]);
 
-        if ($validator->fails()) {
-            return $this->convertErrorsToString($validator->messages());
-        }
-
+            if ($validator->fails()) {
+                return $this->convertErrorsToString($validator->messages());
+            }
 
             $input = $request->all();
             $input['password'] = bcrypt($input['password']);
@@ -52,9 +52,9 @@ class AuthController extends BaseController
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
             return $this->sendResponse(new UserDataResource($user), 'تم التسجيل بنجاح انتظر التفعيل !');
 
-        }  catch (\Exception$e) {
+        } catch (\Exception$e) {
             DB::rollback();
-              return $this->sendError($e->getMessage(), 'حدث خطأ ما');
+            return $this->sendError($e->getMessage(), 'حدث خطأ ما');
         }
     }
 
@@ -156,5 +156,84 @@ class AuthController extends BaseController
         } else {
             return $this->successResponse('لا يوجد اشعارات حتى الان');
         }
+    }
+
+    public function updateUser(Request $request)
+    {
+        try
+        {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+                'lang' => 'required',
+                'device_token' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return $this->convertErrorsToString($validator->messages());
+            }
+
+            $user = User::where('id', '=', $request->id)->first();
+            $input = [
+                'n_id' => $request->n_id,
+                'mobile' => $request->mobile,
+                'bank_account' => $request->bank_account,
+                'email' => $request->email,
+
+            ];
+            if ($request->lang == 'ar') {
+                $input['address_ar'] = $request->address;
+            } else {
+                $input['address_en'] = $request->address;
+            }
+            if ($user) {
+
+                if ($request->hasFile('image')) {
+                    $attach_image = $request->file('image');
+
+                    $input['image'] = $this->UplaodImage($attach_image);
+                }
+                $user->update($input);
+                $device = Device::where('token', '=', $request->device_token)->first(); //laravel returns an integer
+                $data = [
+                    'token' => $request->device_token,
+                    'user_id' => $user->id,
+                    'status' => 1,
+                ];
+                if ($device) {
+                    $device->update($data);
+
+                } else {
+                    Device::create($data);
+                }
+                return $this->sendResponse(new UserDataResource($user), 'تم تعديل البيانات بنجاح');
+            } else {
+                return $this->sendError('لا يوجد مستخدم مطابق');
+            }
+        } catch (\Exception$e) {
+            return $this->sendError($e->getMessage(), 'حدث خطأ ما');
+        }
+
+    }
+
+    /* uplaud image
+     */
+    public function UplaodImage($file_request)
+    {
+        //  This is Image Info..
+        $file = $file_request;
+        $name = $file->getClientOriginalName();
+        $ext = $file->getClientOriginalExtension();
+        $size = $file->getSize();
+        $path = $file->getRealPath();
+        $mime = $file->getMimeType();
+
+        // Rename The Image ..
+        $imageName = $name;
+        $uploadPath = public_path('uploads/users');
+
+        // Move The image..
+        $file->move($uploadPath, $imageName);
+
+        return $imageName;
     }
 }

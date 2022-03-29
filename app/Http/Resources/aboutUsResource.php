@@ -3,7 +3,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CompanyResource extends JsonResource
+class aboutUsResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,9 +15,10 @@ class CompanyResource extends JsonResource
     {
 
         return [
-            "mobile"=>$this->mobile ?? '',
-            'email'=>$this->email ?? '',
-            'website'=>$this->website ?? '',
+            "who_we_are_ar"=>$this->who_we_are_ar ?? '',
+            'who_we_are_en'=>$this->who_we_are_en ?? '',
+            'what_we_do_ar'=>$this->what_we_do_ar ?? '',
+            'what_we_do_en'=>$this->what_we_do_en ?? '',
         ];
 
     }
