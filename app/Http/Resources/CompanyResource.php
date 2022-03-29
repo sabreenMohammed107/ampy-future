@@ -15,9 +15,9 @@ class CompanyResource extends JsonResource
     {
 
         return [
-            "mobile"=>$this->mobile,
-            'email'=>$this->email,
-            'website'=>$this->website,
+            "mobile"=>$this->mobile ?? '',
+            'email'=>$this->email ?? '',
+            'website'=>$this->website ?? '',
         ];
 
     }

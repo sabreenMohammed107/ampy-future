@@ -15,10 +15,10 @@ class aboutUsResource extends JsonResource
     {
 
         return [
-            "who_we_are_ar"=>$this->who_we_are_ar,
-            'who_we_are_en'=>$this->who_we_are_en,
-            'what_we_do_ar'=>$this->what_we_do_ar,
-            'what_we_do_en'=>$this->what_we_do_en,
+            "who_we_are_ar"=>$this->who_we_are_ar ?? '',
+            'who_we_are_en'=>$this->who_we_are_en ?? '',
+            'what_we_do_ar'=>$this->what_we_do_ar ?? '',
+            'what_we_do_en'=>$this->what_we_do_en ?? '',
         ];
 
     }
