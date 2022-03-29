@@ -28,6 +28,8 @@ class AuthController extends BaseController
             // Disable foreign key checks!
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             $validator = Validator::make($request->all(), [
+
+                'name' => 'required',
                 'emp_code' => 'required|unique:users',
                 'mobile' => 'required|unique:users',
                 'password' => 'required',
