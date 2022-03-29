@@ -20,7 +20,7 @@ class UserDataResource extends JsonResource
             "email" => $this->email ?? '',
             "mobile" => $this->mobile,
             "emp_code" => $this->emp_code,
-            "image" => $this->profile ? asset('uploads/users/' . $this->image) : env('APP_URL') . '/storage/default_profile.jpeg',
+            "image" => $this->image ? asset('uploads/users/' . $this->image) : env('APP_URL') . '/storage/default_profile.jpeg',
             "register_approved" => $this->register_approved ?? 0,
             'transaction' => TransactionResource::collection($this->transation->take(3)),
             "latestTransaction" => TransactionResource::make($this->latestTransation),
