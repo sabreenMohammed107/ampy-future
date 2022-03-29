@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Events\SendNotitficationEvent;
+use App\Http\Resources\NotificationsResourse;
 use App\Http\Resources\TransactionDataResource;
 use App\Http\Resources\TransactionResource;
+use App\Models\FCMNotification;
 use App\Models\Transaction;
 use App\Models\Transaction_detail;
 use Illuminate\Http\Request;
@@ -35,6 +38,22 @@ class TransactionController extends BaseController
     }
 
     public function singleTransactions($id){
+
+        //send notifications envent 
+
+        $data =[
+            'user_id' => 1,
+            'title_en' => 'been',
+            'title_en' => 'You have been accepted as instructor',
+            'body_en' => 'ttttttttttt',
+            'body_ar' => 'You',
+       ];
+       FCMNotification::Create($data);
+    
+       broadcast(new SendNotitficationEvent($data))->toOthers();
+
+       //end notifcations code 
+       
         $row=Transaction::where('id','=',$id)->first();
         $details=Transaction_detail::where('transaction_id',$id)->first();
         if($details){
@@ -44,5 +63,24 @@ class TransactionController extends BaseController
         }
 
 
+    }
+
+    public function listNofications(Request $request)
+    {
+        $user_id=auth()->user()->id;
+        $notifications=FCMNotification::where('user_id',$user_id)->orderBy('id','desc')->limit(10)->get();
+
+        return NotificationsResourse::collection($notifications);
+        
+    }
+
+    public function updateNotifications(Request $request)
+    {
+        $user_id=auth()->user()->id;
+        
+        FCMNotification::where('user_id',$user_id)->update(['status'=>'seen']);
+
+        return $this->successResponse();
+        
     }
 }
