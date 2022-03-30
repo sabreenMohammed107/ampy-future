@@ -20,7 +20,7 @@ class TransactionController extends BaseController
     public function allTransactions(Request $request)
     {
         $user = Auth::guard('api')->user();
-        dd($user);
+
         $transactions = Transaction::where('user_id','=', $user->id)->orderBy('id', 'DESC');
 
         if (!empty($request->get("year_id"))) {
