@@ -6,14 +6,15 @@ use App\Events\SendNotitficationEvent;
 use App\Http\Resources\NotificationsResourse;
 use App\Http\Resources\TransactionDataResource;
 use App\Http\Resources\TransactionResource;
+use App\Http\Resources\UserDataResource;
 use App\Models\FCMNotification;
 use App\Models\Transaction;
 use App\Models\Transaction_detail;
 use App\Models\User;
 use App\Models\Year;
+use App\Services\FCMService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Services\FCMService;
 
 class TransactionController extends BaseController
 {
@@ -21,12 +22,15 @@ class TransactionController extends BaseController
     public function allTransactions(Request $request)
     {
         $user = Auth::guard('api')->user();
+        $data = [];
+        $years = Year::all();
+        array_push($data, $years);
 
-        $transactions = Transaction::where('user_id','=', $user->id)->orderBy('id', 'DESC');
+        $transactions = Transaction::where('user_id', '=', $user->id)->orderBy('id', 'DESC');
 
         if (!empty($request->get("year_id"))) {
-            $year=Year::where('year','%like%'.$request->get("year_id"). '%')->first();
-            if($year){
+            $year = Year::where('year', '%like%' . $request->get("year_id") . '%')->first();
+            if ($year) {
                 $transactions->whereHas('month', function ($query) use ($year) {
                     $query->where('year_id', '=', $year->id);
                 });
@@ -35,48 +39,54 @@ class TransactionController extends BaseController
         }
 
         $transactions = $transactions->get();
-        $transactions->account_no=$user->bank_account;
-
-        if ($transactions->count()>0) {
-            return $this->sendResponse(TransactionResource::collection($transactions), 'كل المعاملات المالية');
+        $transactions->account_no = $user->bank_account;
+        array_push($data, TransactionResource::collection($transactions));
+        if ($transactions->count() > 0) {
+            return $this->sendResponse($data, 'كل المعاملات المالية');
         } else {
-            return $this->sendResponse(TransactionResource::collection($transactions),'لا يوجد معاملات حتى الان');
+            return $this->sendResponse($data, 'لا يوجد معاملات حتى الان');
         }
 
     }
 
-    public function singleTransactions($id){
+    public function homeData(Request $request)
+    {
+        $user = Auth::guard('api')->user();
+        return $this->sendResponse(new UserDataResource($user), 'بيانات الصفحة الرئيسيه');
+
+    }
+    public function singleTransactions($id)
+    {
 
         //send notifications envent
 
-        $data =[
-            'user_id' => 1,
-            'title_en' => 'been',
-            'title_en' => 'You have been accepted as instructor',
-            'body_en' => 'ttttttttttt',
-            'body_ar' => 'You',
-       ];
-       FCMNotification::Create($data);
+        // $data = [
+        //     'user_id' => 1,
+        //     'title_en' => 'been',
+        //     'title_en' => 'You have been accepted as instructor',
+        //     'body_en' => 'ttttttttttt',
+        //     'body_ar' => 'You',
+        // ];
+        // FCMNotification::Create($data);
 
-       broadcast(new SendNotitficationEvent($data))->toOthers();
+        // broadcast(new SendNotitficationEvent($data))->toOthers();
 
-       //end notifcations code
+        //end notifcations code
 
-        $row=Transaction::where('id','=',$id)->first();
-        $details=Transaction_detail::where('transaction_id',$id)->first();
-        if($details){
+        $row = Transaction::where('id', '=', $id)->first();
+        $details = Transaction_detail::where('transaction_id', $id)->first();
+        if ($details) {
             return $this->sendResponse(new TransactionDataResource($details), 'بيانات المعاملة');
-        }else{
+        } else {
             return $this->sendError('حدث خطأ لا توجد معاملة ');
         }
-
 
     }
 
     public function listNofications(Request $request)
     {
-        $user_id=auth()->user()->id;
-        $notifications=FCMNotification::where('user_id',$user_id)->orderBy('id','desc')->limit(10)->get();
+        $user_id = auth()->user()->id;
+        $notifications = FCMNotification::where('user_id', $user_id)->orderBy('id', 'desc')->limit(10)->get();
 
         return NotificationsResourse::collection($notifications);
 
@@ -84,9 +94,9 @@ class TransactionController extends BaseController
 
     public function updateNotifications(Request $request)
     {
-        $user_id=auth()->user()->id;
+        $user_id = auth()->user()->id;
 
-        FCMNotification::where('user_id',$user_id)->update(['status'=>'seen']);
+        FCMNotification::where('user_id', $user_id)->update(['status' => 'seen']);
 
         return $this->successResponse();
 
@@ -94,26 +104,26 @@ class TransactionController extends BaseController
 
     public function sendNotificationrToUser($id)
     {
-       // get a user to get the fcm_token that already sent.               from mobile apps
-       $user = User::findOrFail($id);
+        // get a user to get the fcm_token that already sent.               from mobile apps
+        $user = User::findOrFail($id);
 
-      FCMService::send(
-          $user->fcm_token,
-          [
-              'title' => 'your title',
-              'body' => 'your body',
-          ],
-          [
-            'message' => 'Extra Notification Data'
-          ],
-      );
+        FCMService::send(
+            $user->fcm_token,
+            [
+                'title' => 'your title',
+                'body' => 'your body',
+            ],
+            [
+                'message' => 'Extra Notification Data',
+            ],
+        );
 
     }
     public function addFirebaseToken(Request $request)
     {
-        $user_id=auth()->user()->id;
-        $token=$request->token;
-        User::where('id',$user_id)->update(['fcm_token',$token]);
+        $user_id = auth()->user()->id;
+        $token = $request->token;
+        User::where('id', $user_id)->update(['fcm_token', $token]);
 
         return $this->successResponse();
 

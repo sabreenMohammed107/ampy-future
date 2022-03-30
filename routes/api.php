@@ -29,6 +29,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('update-user', [AuthController::class, 'updateUser']);
     Route::post('all-notifications', [AuthController::class, 'allNofications']);
     Route::post('all-transactions', [TransactionController::class, 'allTransactions']);
+    Route::get('home-data', [TransactionController::class, 'homeData']);
     Route::get('single-transactions/{id}', [TransactionController::class, 'singleTransactions']);
     Route::get('contact-us', [ContactController::class, 'getContact']);
     Route::post('send-msg', [ContactController::class, 'suggest']);
@@ -39,7 +40,7 @@ Route::middleware('auth:api')->group( function () {
     Route::get('list-notifications', [TransactionController::class, 'listNofications']);
    // Route::get('notification/{id}', [TransactionController::class, 'singleNofication']);
     Route::post('update_notifications', [TransactionController::class, 'updateNotifications']);
-  
+
     Route::post('add_firebase_token', [TransactionController::class, 'addFirebaseToken']);
 
 
