@@ -105,7 +105,11 @@ class UsersController extends Controller
     public function show($id)
     {
         $row = $this->model::findOrFail($id);
-        return view($this->view . 'credit', compact('row'));
+
+        $row->update(['register_approved'=>1]);
+
+        // Display a successful message ...
+        return redirect()->route($this->route . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
     }
 
     public function userFinance(Request $request)
