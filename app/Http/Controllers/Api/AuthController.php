@@ -152,7 +152,7 @@ class AuthController extends BaseController
     {
         $user = Auth::user();
         $notifications = Transaction::where('user_id', '=', $user->id)->orderBy('id', 'DESC');
-        dd($notifications);
+       // dd($notifications);
 
         if ($notifications->count() > 0) {
             return $this->sendResponse($notifications, 'كل الاشعارات');
