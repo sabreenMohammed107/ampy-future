@@ -7,6 +7,7 @@ use App\Http\Resources\NotificationsResourse;
 use App\Http\Resources\TransactionDataResource;
 use App\Http\Resources\TransactionResource;
 use App\Http\Resources\UserDataResource;
+use App\Http\Resources\YearResource;
 use App\Models\FCMNotification;
 use App\Models\Transaction;
 use App\Models\Transaction_detail;
@@ -24,7 +25,7 @@ class TransactionController extends BaseController
         $user = Auth::guard('api')->user();
         $data = [];
         $years = Year::all();
-        array_push($data, $years);
+        array_push($data, YearResource::collection($years));
 
         $transactions = Transaction::where('user_id', '=', $user->id)->orderBy('id', 'DESC');
 
