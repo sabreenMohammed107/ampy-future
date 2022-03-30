@@ -32,6 +32,7 @@ Route::middleware('auth:api')->group( function () {
     Route::get('single-transactions/{id}', [TransactionController::class, 'singleTransactions']);
     Route::get('contact-us', [ContactController::class, 'getContact']);
     Route::post('send-msg', [ContactController::class, 'suggest']);
+    Route::post('update-user-image', [AuthController::class, 'updateUserImage']);
 
 
     //notifications APIs

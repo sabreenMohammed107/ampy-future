@@ -28,10 +28,13 @@ class AuthController extends BaseController
             // Disable foreign key checks!
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
             $validator = Validator::make($request->all(), [
+
+                'name' => 'required',
                 'emp_code' => 'required|unique:users',
                 'mobile' => 'required|unique:users',
                 'password' => 'required',
                 'c_password' => 'required|same:password',
+
             ]);
 
             if ($validator->fails()) {
@@ -187,11 +190,7 @@ class AuthController extends BaseController
             }
             if ($user) {
 
-                if ($request->hasFile('image')) {
-                    $attach_image = $request->file('image');
 
-                    $input['image'] = $this->UplaodImage($attach_image);
-                }
                 $user->update($input);
                 $device = Device::where('token', '=', $request->device_token)->first(); //laravel returns an integer
                 $data = [
@@ -206,6 +205,39 @@ class AuthController extends BaseController
                     Device::create($data);
                 }
                 return $this->sendResponse(new UserDataResource($user), 'تم تعديل البيانات بنجاح');
+            } else {
+                return $this->sendError('لا يوجد مستخدم مطابق');
+            }
+        } catch (\Exception$e) {
+            return $this->sendError($e->getMessage(), 'حدث خطأ ما');
+        }
+
+    }
+    public function updateUserImage(Request $request){
+        try
+        {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required',
+                'image' => 'required',
+
+            ]);
+
+            if ($validator->fails()) {
+                return $this->convertErrorsToString($validator->messages());
+            }
+
+            $user = User::where('id', '=', $request->id)->first();
+
+            if ($user) {
+
+                if ($request->hasFile('image')) {
+                    $attach_image = $request->file('image');
+
+                    $input['image'] = $this->UplaodImage($attach_image);
+                }
+                $user->update($input);
+
+                return $this->sendResponse(new UserDataResource($user), 'تم تعديل الصورة بنجاح');
             } else {
                 return $this->sendError('لا يوجد مستخدم مطابق');
             }
