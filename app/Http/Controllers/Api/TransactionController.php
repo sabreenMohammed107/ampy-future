@@ -20,6 +20,7 @@ class TransactionController extends BaseController
     public function allTransactions(Request $request)
     {
         $user = Auth::guard('api')->user();
+        dd($user);
         $transactions = Transaction::where('user_id','=', $user->id)->orderBy('id', 'DESC');
 
         if (!empty($request->get("year_id"))) {
@@ -88,7 +89,7 @@ class TransactionController extends BaseController
 
     public function sendNotificationrToUser($id)
     {
-       // get a user to get the fcm_token that already sent.               from mobile apps 
+       // get a user to get the fcm_token that already sent.               from mobile apps
        $user = User::findOrFail($id);
 
       FCMService::send(
