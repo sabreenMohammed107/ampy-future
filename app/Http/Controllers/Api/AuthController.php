@@ -166,7 +166,7 @@ class AuthController extends BaseController
         try
         {
             $validator = Validator::make($request->all(), [
-                'id' => 'required',
+
                 'lang' => 'required',
                 'device_token' => 'required',
             ]);
@@ -174,8 +174,8 @@ class AuthController extends BaseController
             if ($validator->fails()) {
                 return $this->convertErrorsToString($validator->messages());
             }
-
-            $user = User::where('id', '=', $request->id)->first();
+            $user = Auth::guard('api')->user();
+            // $user = User::where('id', '=', $request->id)->first();
             $input = [
                 'n_id' => $request->n_id,
                 'mobile' => $request->mobile,
@@ -217,7 +217,6 @@ class AuthController extends BaseController
         try
         {
             $validator = Validator::make($request->all(), [
-                'id' => 'required',
                 'image' => 'required',
 
             ]);
@@ -225,8 +224,8 @@ class AuthController extends BaseController
             if ($validator->fails()) {
                 return $this->convertErrorsToString($validator->messages());
             }
-
-            $user = User::where('id', '=', $request->id)->first();
+            $user = Auth::guard('api')->user();
+            // $user = User::where('id', '=', $request->id)->first();
 
             if ($user) {
 
