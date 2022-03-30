@@ -32,13 +32,14 @@ Route::middleware('auth:api')->group( function () {
     Route::get('single-transactions/{id}', [TransactionController::class, 'singleTransactions']);
     Route::get('contact-us', [ContactController::class, 'getContact']);
     Route::post('send-msg', [ContactController::class, 'suggest']);
+    Route::post('update-user-image', [AuthController::class, 'updateUserImage']);
 
 
     //notifications APIs
     Route::get('list-notifications', [TransactionController::class, 'listNofications']);
    // Route::get('notification/{id}', [TransactionController::class, 'singleNofication']);
     Route::post('update_notifications', [TransactionController::class, 'updateNotifications']);
-  
+
 
     Route::get('faq', [ContactController::class, 'getFaq']);
     Route::get('policy', [ContactController::class, 'getPolicy']);
