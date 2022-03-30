@@ -39,6 +39,8 @@ Route::middleware('auth:api')->group( function () {
    // Route::get('notification/{id}', [TransactionController::class, 'singleNofication']);
     Route::post('update_notifications', [TransactionController::class, 'updateNotifications']);
   
+    Route::post('add_firebase_token', [TransactionController::class, 'addFirebaseToken']);
+
 
     Route::get('faq', [ContactController::class, 'getFaq']);
     Route::get('policy', [ContactController::class, 'getPolicy']);

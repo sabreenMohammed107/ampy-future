@@ -9,8 +9,10 @@ use App\Http\Resources\TransactionResource;
 use App\Models\FCMNotification;
 use App\Models\Transaction;
 use App\Models\Transaction_detail;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\FCMService;
 
 class TransactionController extends BaseController
 {
@@ -82,5 +84,32 @@ class TransactionController extends BaseController
 
         return $this->successResponse();
         
+    }
+
+    public function sendNotificationrToUser($id)
+    {
+       // get a user to get the fcm_token that already sent.               from mobile apps 
+       $user = User::findOrFail($id);
+
+      FCMService::send(
+          $user->fcm_token,
+          [
+              'title' => 'your title',
+              'body' => 'your body',
+          ],
+          [
+            'message' => 'Extra Notification Data'
+          ],
+      );
+
+    }
+    public function addFirebaseToken(Request $request)
+    {
+        $user_id=auth()->user()->id;
+        $token=$request->token;
+        User::where('id',$user_id)->update(['fcm_token',$token]);
+
+        return $this->successResponse();
+
     }
 }
