@@ -10,6 +10,7 @@ use App\Models\FCMNotification;
 use App\Models\Transaction;
 use App\Models\Transaction_detail;
 use App\Models\User;
+use App\Models\Year;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Services\FCMService;
@@ -24,8 +25,9 @@ class TransactionController extends BaseController
         $transactions = Transaction::where('user_id','=', $user->id)->orderBy('id', 'DESC');
 
         if (!empty($request->get("year_id"))) {
-            $transactions->whereHas('month', function ($query) use ($request) {
-                $query->where('year_id', '=', $request->get("year_id"));
+            $year=Year::where('year','=',$request->get("year_id"))->first();
+            $transactions->whereHas('month', function ($query) use ($year) {
+                $query->where('year_id', '=', $year->id);
             });
         }
 
