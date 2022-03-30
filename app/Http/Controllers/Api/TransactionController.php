@@ -17,7 +17,7 @@ class TransactionController extends BaseController
     //
     public function allTransactions(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::guard('api')->user();
         $transactions = Transaction::where('user_id','=', $user->id)->orderBy('id', 'DESC');
 
         if (!empty($request->get("year_id"))) {
@@ -39,7 +39,7 @@ class TransactionController extends BaseController
 
     public function singleTransactions($id){
 
-        //send notifications envent 
+        //send notifications envent
 
         $data =[
             'user_id' => 1,
@@ -49,11 +49,11 @@ class TransactionController extends BaseController
             'body_ar' => 'You',
        ];
        FCMNotification::Create($data);
-    
+
        broadcast(new SendNotitficationEvent($data))->toOthers();
 
-       //end notifcations code 
-       
+       //end notifcations code
+
         $row=Transaction::where('id','=',$id)->first();
         $details=Transaction_detail::where('transaction_id',$id)->first();
         if($details){
@@ -71,16 +71,16 @@ class TransactionController extends BaseController
         $notifications=FCMNotification::where('user_id',$user_id)->orderBy('id','desc')->limit(10)->get();
 
         return NotificationsResourse::collection($notifications);
-        
+
     }
 
     public function updateNotifications(Request $request)
     {
         $user_id=auth()->user()->id;
-        
+
         FCMNotification::where('user_id',$user_id)->update(['status'=>'seen']);
 
         return $this->successResponse();
-        
+
     }
 }
