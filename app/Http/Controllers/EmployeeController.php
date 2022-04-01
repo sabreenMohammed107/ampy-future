@@ -2,18 +2,13 @@
 
 namespace App\Http\Controllers;
 
-// use App\Models\Branch;
-
 use App\Models\Company;
 use App\Models\User;
-// use Spatie\Permission\Models\Role;
 use App\Models\User_payrol_rule;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-class UsersController extends Controller
+class EmployeeController extends Controller
 {
-    // This is for General Class Variables.
     protected $model;
     protected $view;
     protected $route;
@@ -28,10 +23,9 @@ class UsersController extends Controller
         $this->middleware('auth');
 
         $this->model = $model;
-        $this->view = 'admin.users.';
-        $this->route = 'users.';
+        $this->view = 'admin.emps.';
+        $this->route = 'emps.';
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -39,7 +33,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $data = $this->model::where('emp_status',1)->get();
+        $data = $this->model::where('emp_status',0)->get();
 
         return view($this->view . 'index', compact('data'));
     }
@@ -51,9 +45,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-
-        $companies = Company::pluck('name_ar', 'id')->all();
-        return view($this->view . 'add', compact('companies'));
+        //
     }
 
     /**
@@ -64,36 +56,7 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-
-        try
-        {
-            // Disable foreign key checks!
-            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-            $input = $request->all();
-            $input['password'] = \Hash::make($input['password']);
-            $input['company_id'] = $request->input('company');
-            if ($request->hasFile('image')) {
-                $attach_image = $request->file('image');
-
-                $input['image'] = $this->UplaodImage($attach_image);
-            }
-            $user = $this->model::create($input);
-//user payroll
-            // $pay = new User_payrol_rule();
-            // $pay->user_id = $user->id;
-            // $pay->save();
-
-            DB::commit();
-            // Enable foreign key checks!
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-            // Display a successful message ...
-            return redirect()->route($this->route . 'index')->with('flash_success', 'تم إنشاء المستخدم بنجاح');
-
-        } catch (\Exception$e) {
-            DB::rollback();
-
-            return redirect()->route($this->route . 'index')->with('flash_danger', 'خطأ ...  !!!');
-        }
+        //
     }
 
     /**
@@ -112,22 +75,6 @@ class UsersController extends Controller
         return redirect()->route($this->route . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
     }
 
-    public function userFinance(Request $request)
-    {
-        try {
-            $pay = User_payrol_rule::where('user_id', $request->get('user_id'))->first();
-            $pay->basic_salary = $request->get('basic_salary');
-            $pay->settlements = $request->get('settlements');
-            $pay->allowances = $request->get('allowances');
-            $pay->taxes = $request->get('taxes');
-            $pay->insurance = $request->get('insurance');
-            $pay->update();
-            return redirect()->route($this->route . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
-
-        } catch (\Exception$e) {
-            return redirect()->route($this->route . 'index')->with('flash_danger', 'خطأ ...  !!!');
-        }
-    }
     /**
      * Show the form for editing the specified resource.
      *
@@ -141,7 +88,6 @@ class UsersController extends Controller
         $companies = Company::pluck('name_ar', 'id')->all();
 
         return view($this->view . 'edit', compact('user', 'companies'));
-
     }
 
     /**
@@ -153,7 +99,6 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-
         try {
 
             $input = $request->all();
@@ -201,7 +146,25 @@ class UsersController extends Controller
         }
     }
 
-    /* uplaud image
+    public function userFinance(Request $request)
+    {
+        try {
+            $pay = User_payrol_rule::where('user_id', $request->get('user_id'))->first();
+            $pay->basic_salary = $request->get('basic_salary');
+            $pay->settlements = $request->get('settlements');
+            $pay->allowances = $request->get('allowances');
+            $pay->taxes = $request->get('taxes');
+            $pay->insurance = $request->get('insurance');
+            $pay->update();
+            return redirect()->route($this->route . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
+
+        } catch (\Exception$e) {
+            return redirect()->route($this->route . 'index')->with('flash_danger', 'خطأ ...  !!!');
+        }
+    }
+
+
+     /* uplaud image
      */
     public function UplaodImage($file_request)
     {

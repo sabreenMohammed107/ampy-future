@@ -5,146 +5,166 @@
 @section('content')
 
 
-<div class="row">
-    <div class="col-12">
-        <div class="card" style="background: #ffffff;box-shadow: 0 1px 1px rgb(0 0 0 / 10%);">
-            <div class="box-header">
-                <h3 class="box-title">بيانات مرتبات شهر {{$row->month_ar ?? ''}}</h3>
-                {{-- <a href="{{ route('year.create') }}" class="btn btn-info btn-lg pull-right"> اضافة </a> --}}
+    <div class="row">
+        <div class="col-12">
+            <div class="card" style="background: #ffffff;box-shadow: 0 1px 1px rgb(0 0 0 / 10%);">
+                <div class="box-header">
+                    <h3 class="box-title">بيانات مرتبات شهر {{ $row->month_ar ?? '' }}</h3>
+                    <?php
+                    $exist = App\Models\Transaction::where('month_id', $row->id)->first();
+                    ?>
+                    @if ($exist->revision_status == 1)
+                        <h3 class="btn box-title btn-success">تم مراجعة بيانات {{ $row->month_ar ?? '' }}</h3>
+                    @endif
 
-            </div>
+                    {{-- <a href="{{ route('year.create') }}" class="btn btn-info btn-lg pull-right"> اضافة </a> --}}
 
-            <div class="box-body ">
-                <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-resizable="true"
-                    data-cookie="true" data-show-export="true" data-locale="ar-SA" style="direction: rtl">
-                    <thead>
-                        <th data-field="state" data-checkbox="false"></th>
-                        <th data-field="id">#</th>
+                </div>
 
-                        <th>كود الموظف</th>
-                        <th>اسم الموظف</th>
-                        <th> المرتب الاساسى</th>
-                        <th>التسويات </th>
-                        <th> البدلات</th>
-                        <th> الضرائب</th>
-                        <th> التأمينات</th>
-                        <th>الاجراءات</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($transactions as $index => $row)
-                            <tr>
-                                <td></td>
-                                <td>{{ $index + 1 }}</td>
+                <div class="box-body ">
+                    <table id="table" data-toggle="table" data-pagination="true" data-search="true" data-resizable="true"
+                        data-cookie="true" data-show-export="true" data-locale="ar-SA" style="direction: rtl">
+                        <thead>
+                            <th data-field="state" data-checkbox="false"></th>
+                            <th data-field="id">#</th>
 
-                                <td>{{ $row->user->emp_code ?? '' }}</td>
-                                <td>{{ $row->user->name ?? '' }}</td>
-                                <td>{{ $row->transaction_details[0]->basic_salary ?? '' }}</td>
-                                <td>{{ $row->transaction_details[0]->settlements ?? '' }}</td>
-                                <td>{{ $row->transaction_details[0]->allowances ?? '' }}</td>
-                                <td>{{ $row->transaction_details[0]->taxes ?? '' }}</td>
-                                <td>{{ $row->transaction_details[0]->insurance ?? '' }}</td>
-
-
-                                <td>
-                                    <div class="btn-group">
-
-
-
-                                        <a href="#changeValues{{ $row->id }}" data-toggle="modal"
-                                            data-target="#changeValues{{ $row->id }}">
-                                            <p class="fa  fa-edit"></p>
-                                        </a>
-
-                                    </div>
-                                </td>
-
+                            <th>كود الموظف</th>
+                            <th>اسم الموظف</th>
+                            <th> المرتب الاساسى</th>
+                            <th>التسويات </th>
+                            <th> البدلات</th>
+                            <th> الضرائب</th>
+                            <th> التأمينات</th>
+                            <th>الاجراءات</th>
                             </tr>
-                            <!--/Edit Customer-->
-                            <!-- Delete Modal -->
+                        </thead>
+                        <tbody>
+                            @foreach ($transactions as $index => $row)
+                                <tr>
+                                    <td></td>
+                                    <td>{{ $index + 1 }}</td>
 
-                                    <div class="modal fade dir-rtl" id="changeValues{{ $row->id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-                                    aria-hidden="true">
+                                    <td>{{ $row->user->emp_code ?? '' }}</td>
+                                    <td>{{ $row->user->name ?? '' }}</td>
+                                    <td>{{ $row->transaction_details[0]->basic_salary ?? '' }}</td>
+                                    <td>{{ $row->transaction_details[0]->settlements ?? '' }}</td>
+                                    <td>{{ $row->transaction_details[0]->allowances ?? '' }}</td>
+                                    <td>{{ $row->transaction_details[0]->taxes ?? '' }}</td>
+                                    <td>{{ $row->transaction_details[0]->insurance ?? '' }}</td>
+
+
+                                    <td>
+                                        <div class="btn-group">
+
+
+                                            @if ($row->revision_status != 1)
+                                                <a href="#changeValues{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#changeValues{{ $row->id }}">
+                                                    <p class="fa  fa-edit"></p>
+                                                </a>
+                                            @endif
+                                        </div>
+                                    </td>
+
+                                </tr>
+                                <!--/Edit Customer-->
+                                <!-- Delete Modal -->
+
+                                <div class="modal fade dir-rtl" id="changeValues{{ $row->id }}" tabindex="-1"
+                                    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header bg-success">
-                                                <h5 class="modal-title" id="exampleModalLabel">تعديل البيانات المالية </h5>
-                                                <button type="button" class="close m-0 p-0 text-white" data-dismiss="modal" aria-label="Close">
+                                                <h5 class="modal-title" id="exampleModalLabel">تعديل البيانات المالية
+                                                </h5>
+                                                <button type="button" class="close m-0 p-0 text-white" data-dismiss="modal"
+                                                    aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                 </button>
                                             </div>
                                             <div class="modal-body text-center">
                                                 <h3><i class="fa fa-edit text-success"></i></h3>
-                                    <form role="form" action="{{ route('updateDetailsValues') }}">
-                                        @csrf
-                                        <div class="card-body">
-                                            <div class="row">
+                                                <form role="form" action="{{ route('updateDetailsValues') }}">
+                                                    @csrf
+                                                    <div class="card-body">
+                                                        <div class="row">
 
-                                                <input type="hidden" name="transaction_id" value="{{ $row->id }}">
+                                                            <input type="hidden" name="transaction_id"
+                                                                value="{{ $row->id }}">
 
 
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label>{{ __('  الراتب الاساسى ') }}</label>
-                                                        <input type="text" id="newTitle" name="basic_salary" value="{{ $row->transaction_details[0]->basic_salary ?? '' }}" class="form-control"
-                                                            placeholder=" الراتب الاساسى">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>{{ __('  الراتب الاساسى ') }}</label>
+                                                                    <input type="text" id="newTitle" name="basic_salary"
+                                                                        value="{{ $row->transaction_details[0]->basic_salary ?? '' }}"
+                                                                        class="form-control"
+                                                                        placeholder=" الراتب الاساسى">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>{{ __('التسويات') }}</label>
+                                                                    <input type="text" id="newTitle"
+                                                                        value="{{ $row->transaction_details[0]->settlements ?? '' }}"
+                                                                        name="settlements" class="form-control"
+                                                                        placeholder=" التسويات">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>{{ __('البدلات') }}</label>
+                                                                    <input type="text" id="newTitle"
+                                                                        value="{{ $row->transaction_details[0]->allowances ?? '' }}"
+                                                                        name="allowances" class="form-control"
+                                                                        placeholder=" البدلات">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>{{ __('الضرايب') }}</label>
+                                                                    <input type="text" id="newTitle"
+                                                                        value="{{ $row->transaction_details[0]->taxes ?? '' }}"
+                                                                        name="taxes" class="form-control"
+                                                                        placeholder=" الضرايب">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label>{{ __('التأمينات') }}</label>
+                                                                    <input type="text" id="newTitle"
+                                                                        value="{{ $row->transaction_details[0]->insurance ?? '' }}"
+                                                                        name="insurance" class="form-control"
+                                                                        placeholder=" التأمينات">
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label>{{ __('التسويات') }}</label>
-                                                        <input type="text" id="newTitle" value="{{ $row->transaction_details[0]->settlements ?? '' }}" name="settlements" class="form-control"
-                                                            placeholder=" التسويات">
+                                                    <!-- /.card-body -->
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-success "
+                                                            data-dismiss="modal">الغاء</button>
+                                                        <button type="submit" class="btn btn-danger">تأكيد</button>
                                                     </div>
-                                                </div>
-
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label>{{ __('البدلات') }}</label>
-                                                        <input type="text" id="newTitle" value="{{ $row->transaction_details[0]->allowances ?? '' }}" name="allowances" class="form-control"
-                                                            placeholder=" البدلات">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label>{{ __('الضرايب') }}</label>
-                                                        <input type="text" id="newTitle" value="{{ $row->transaction_details[0]->taxes ?? '' }}" name="taxes" class="form-control" placeholder=" الضرايب">
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-sm-6">
-                                                    <div class="form-group">
-                                                        <label>{{ __('التأمينات') }}</label>
-                                                        <input type="text" id="newTitle" value="{{ $row->transaction_details[0]->insurance ?? '' }}" name="insurance" class="form-control"
-                                                            placeholder=" التأمينات">
-                                                    </div>
-                                                </div>
+                                                </form>
                                             </div>
                                         </div>
-                                        <!-- /.card-body -->
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-success "
-                                                    data-dismiss="modal">الغاء</button>
-                                            <button type="submit" class="btn btn-danger">تأكيد</button>
-                                        </div>
-                                    </form>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                        @endforeach
-                    </tbody>
-                </table>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.card-body -->
             </div>
-            <!-- /.card-body -->
+            <!-- /.card -->
         </div>
-        <!-- /.card -->
+        <!-- /.col -->
     </div>
-    <!-- /.col -->
-</div>
     <!-- /.row -->
 @endsection
 @section('scripts')

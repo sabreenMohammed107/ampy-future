@@ -40,13 +40,14 @@
                                 <td>{{ $row->email }}</td>
                                 <td>{{ $row->address_ar }}</td>
 <td><div class="btn-group">
-    {{-- <a href="#activate{{ $row->id }}" data-toggle="modal"
+    @if($row->register_approved !=1)
+    <a href="#activate{{ $row->id }}" data-toggle="modal"
         data-target="#activate{{ $row->id }}" title="تفعيل">
         <p class="fa  fa-check"></p>
-    </a> --}}
-
+    </a>
+@endif
     <a href="{{ route('users.edit', $row->id) }}">
-        <p class=" fa fa-edit fa-9x"></p>
+        <p class=" fa fa-edit"></p>
     </a>
 
     {{-- <a href="{{ route('users.show', $row->id) }}">

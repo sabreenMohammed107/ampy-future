@@ -24,4 +24,7 @@ class Company extends Model
         'email',
         'website',
     ];
+    public function bank(){
+        return $this->belongsTo('App\Models\Bank', 'bank_id');
+    }
 }

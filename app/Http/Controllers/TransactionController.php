@@ -3,17 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Device;
+use App\Models\FCMNotification;
 use App\Models\Month;
 use App\Models\Transaction;
 use App\Models\Transaction_detail;
 use App\Models\User;
 use App\Models\User_payrol_rule;
 use App\Models\Year;
+use App\Services\FCMService;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Psy\Readline\Transient;
 
 class TransactionController extends Controller
 {
@@ -73,7 +74,6 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
 
-
         try
         {
             // Disable foreign key checks!
@@ -122,8 +122,8 @@ class TransactionController extends Controller
     public function show($id)
     {
         $row = Month::where('id', '=', $id)->first();
-$transactions=Transaction::where('month_id',$id)->get();
-        return view($this->viewName . 'veiw', compact('row','transactions'));
+        $transactions = Transaction::where('month_id', $id)->get();
+        return view($this->viewName . 'veiw', compact('row', 'transactions'));
     }
 
     /**
@@ -191,28 +191,78 @@ $transactions=Transaction::where('month_id',$id)->get();
         return view($this->viewName . 'preIndex', compact('rows'))->render();
     }
 
-
-    public function updateDetails(Request $request){
-        try{
-            $pay =Transaction_detail::where('transaction_id',$request->get("transaction_id"))->first();
+    public function updateDetails(Request $request)
+    {
+        try {
+            $pay = Transaction_detail::where('transaction_id', $request->get("transaction_id"))->first();
             $pay->basic_salary = $request->get('basic_salary');
             $pay->settlements = $request->get('settlements');
             $pay->allowances = $request->get('allowances');
             $pay->taxes = $request->get('taxes');
             $pay->insurance = $request->get('insurance');
-                $pay->update();
-                return redirect()->route($this->routeName . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
+            $pay->update();
+            return redirect()->route($this->routeName . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
 
-            } catch (\Exception$e) {
-                         return redirect()->route($this->routeName.'index')->with('flash_success', $e->getMessage());
+        } catch (\Exception$e) {
+            return redirect()->route($this->routeName . 'index')->with('flash_success', $e->getMessage());
 
-                // return redirect()->route($this->routeName . 'index')->with('flash_danger', 'خطأ ...  !!!');
-            }
+            // return redirect()->route($this->routeName . 'index')->with('flash_danger', 'خطأ ...  !!!');
+        }
     }
-
 
     public function sendNotification(Request $request)
     {
+
+        try
+        {
+            $users = User_payrol_rule::all();
+            foreach ($users as $user) {
+
+
+                $transaction = Transaction::where('user_id', $user->id)->where('month_id', $request->get('month_id'))->first();
+
+                $transaction->revision_status = 1;
+                $transaction->update();
+                // details
+                $details = Transaction_detail::where('transaction_id', $transaction->id)->first();
+                $total = ($details->net_salary + $details->settlements + $details->allowances) - ($details->taxes + $details->insurance);
+
+
+                $data = [
+                    'title_ar' => 'تم إضافه دفعة ماليه جديده',
+                    'body_ar' =>$total ,
+                    'title_en' => 'A new payment has been added',
+                    'body_en' =>  $total,
+                    'status' => 'not_seen',
+                ];
+
+                FCMService::send(
+                    $user->fcm_token,
+                    $data,
+                    [
+                        'message' => 'Extra Notification Data',
+                    ],
+                );
+               //save f_c_m notification table
+                FCMNotification::create([
+                    'title_ar' => 'تم إضافه دفعة ماليه جديده',
+                    'body_ar' =>$total ,
+                    'title_en' => 'A new payment has been added',
+                    'body_en' =>  $total,
+                    'status' => 'not_seen',
+                    'user_id'=>  $user->id,
+                ]);
+
+            }
+
+            // Display a successful message ...
+            return redirect()->route($this->routeName . 'index')->with('flash_success', 'تم الحفظ بنجاح');
+
+        } catch (\Exception$e) {
+            // DB::rollback();
+            return redirect()->route($this->routeName . 'index')->with($e->getMessage());
+        }
+
         // $firebaseToken = User::whereNotNull('device_token')->pluck('device_token')->all();
         $firebaseToken = Device::whereNotNull('token')->pluck('token')->all();
 
@@ -223,7 +273,7 @@ $transactions=Transaction::where('month_id',$id)->get();
             "notification" => [
                 "title" => $request->title,
                 "body" => $request->body,
-            ]
+            ],
         ];
         $dataString = json_encode($data);
 

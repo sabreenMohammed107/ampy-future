@@ -37,6 +37,7 @@ class User extends Authenticatable implements MustVerifyEmail
     'register_approved',
     'active',
     'fcm_token',
+    'emp_status', // 0=> emp , 1=>admin
     ];
     public function company(){
         return $this->belongsTo('App\Models\Company', 'company_id');

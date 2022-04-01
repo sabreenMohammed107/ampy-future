@@ -46,6 +46,7 @@ class AuthController extends BaseController
             $input['register_approved'] = 0;
             $user = User::create($input);
             $user->accessToken = $user->createToken('MyApp')->accessToken;
+
 //user payroll
             $pay = new User_payrol_rule();
             $pay->user_id = $user->id;
@@ -85,20 +86,25 @@ class AuthController extends BaseController
                 $user->accessToken = $user->createToken('MyApp')->accessToken;
 //devices
                 if ($user->register_approved == 1) {
-                    $device = Device::where('token', '=', $request->device_token)->first(); //laravel returns an integer
-                    $data = [
-                        'token' => $request->device_token,
-                        'user_id' => $user->id,
-                        'status' => 1,
-                    ];
-                    if ($device) {
-                        $device->update($data);
+                    // $device = Device::where('token', '=', $request->device_token)->first(); //laravel returns an integer
+                    // $data = [
+                    //     'token' => $request->device_token,
+                    //     'user_id' => $user->id,
+                    //     'status' => 1,
+                    // ];
+                    // if ($device) {
+                    //     $device->update($data);
 
-                    } else {
-                        Device::create($data);
-                    }
-                    return $this->sendResponse(new UserDataResource($user), 'تم التسجيل بنجاح');
-                } elseif ($user->register_approved == 0) {
+                    // } else {
+                    //     Device::create($data);
+                    // }
+
+                    $user_id = auth()->user()->id;
+                    $token = $request->device_token;
+                    User::where('id', $user_id)->update(['fcm_token', $token]);
+                      return $this->sendResponse(new UserDataResource($user), 'تم التسجيل بنجاح');
+                }
+                 elseif ($user->register_approved == 0) {
                     return $this->sendError('عذرا جارى تأكيد بياناتك');
                 } else {
                     return $this->sendError('عذرا تم رفض اشتراكك');
@@ -125,24 +131,27 @@ class AuthController extends BaseController
 
         try
         {
-            $user = Auth::user();
-            if ($user) {
-                $device = Device::where('token', '=', $request->token)->first(); //laravel returns an integer
-                $data = [
-                    'token' => $request->token,
-                    'user_id' => $user->id,
-                    'status' => 1,
+            // $user = Auth::user();
+            // if ($user) {
+            //     $device = Device::where('token', '=', $request->token)->first(); //laravel returns an integer
+            //     $data = [
+            //         'token' => $request->token,
+            //         'user_id' => $user->id,
+            //         'status' => 1,
 
-                ];
-                if ($device) {
-                    $device->update($data);
+            //     ];
+            //     if ($device) {
+            //         $device->update($data);
 
-                } else {
-                    Device::create($data);
-                }
+            //     } else {
+            //         Device::create($data);
+            //     }
+                $user_id = auth()->user()->id;
+                $token = $request->token;
+                User::where('id', $user_id)->update(['fcm_token', $token]);
                 return $this->sendResponse(null, 'تم تعديل البيانات بنجاح');
 
-            }
+            // }
 
         } catch (\Exception$e) {
             return $this->sendError($e->getMessage(), 'حدث خطأ ما');
@@ -192,18 +201,21 @@ class AuthController extends BaseController
 
 
                 $user->update($input);
-                $device = Device::where('token', '=', $request->device_token)->first(); //laravel returns an integer
-                $data = [
-                    'token' => $request->device_token,
-                    'user_id' => $user->id,
-                    'status' => 1,
-                ];
-                if ($device) {
-                    $device->update($data);
+                // $device = Device::where('token', '=', $request->device_token)->first(); //laravel returns an integer
+                // $data = [
+                //     'token' => $request->device_token,
+                //     'user_id' => $user->id,
+                //     'status' => 1,
+                // ];
+                // if ($device) {
+                //     $device->update($data);
 
-                } else {
-                    Device::create($data);
-                }
+                // } else {
+                //     Device::create($data);
+                // }
+                $user_id = $user->id;
+                $token = $request->device_token;
+                User::where('id', $user_id)->update(['fcm_token', $token]);
                 return $this->sendResponse(new UserDataResource($user), 'تم تعديل البيانات بنجاح');
             } else {
                 return $this->sendError('لا يوجد مستخدم مطابق');

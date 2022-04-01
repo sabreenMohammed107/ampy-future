@@ -11,9 +11,9 @@ class FCMNotification extends Model
     protected $fillable = [
         'user_id',
         'title_ar',
-    'title_en',
-    'body_ar',
-    'body_en',
-    'seen',
+        'title_en',
+        'body_ar',
+        'body_en',
+        'status',
     ];
 }

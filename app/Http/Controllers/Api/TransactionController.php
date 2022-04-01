@@ -89,7 +89,8 @@ class TransactionController extends BaseController
         $user_id = auth()->user()->id;
         $notifications = FCMNotification::where('user_id', $user_id)->orderBy('id', 'desc')->limit(10)->get();
 
-        return NotificationsResourse::collection($notifications);
+        // return NotificationsResourse::collection($notifications);
+        return $this->sendResponse( NotificationsResourse::collection($notifications), ' الاشعارات');
 
     }
 

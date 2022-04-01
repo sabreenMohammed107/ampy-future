@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\MonthController;
 use App\Http\Controllers\PayrollRulesController;
@@ -31,7 +32,7 @@ Route::get('/dashboard', function () {
 
 Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::resource('users', UsersController::class);
-
+    Route::resource('emps', EmployeeController::class);
     Route::resource('company', CompanyController::class);
     Route::resource('bank', BankController::class);
     Route::resource('year', YearController::class);
@@ -45,7 +46,7 @@ Route::get('dynamicTransaction/fetch', [TransactionController::class,'yearData']
 //updateDetailsValues
 Route::get('updateDetailsValues', [TransactionController::class,'updateDetails'])->name('updateDetailsValues');
 //sendNotification
-Route::get('sendNotification', [TransactionController::class,'sendNotification'])->name('sendNotification');
+Route::post('sendNotification', [TransactionController::class,'sendNotification'])->name('sendNotification');
 
 });
 

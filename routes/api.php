@@ -27,8 +27,8 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->group( function () {
     Route::post('token-update', [AuthController::class, 'tokenUpdate']);
     Route::post('update-user', [AuthController::class, 'updateUser']);
-    Route::post('all-notifications', [AuthController::class, 'allNofications']);
-    Route::post('all-transactions', [TransactionController::class, 'allTransactions']);
+    Route::post('all-notifications', [TransactionController::class, 'listNofications']);
+    Route::post('update-transactions', [TransactionController::class, 'updateNotifications']);
     Route::get('home-data', [TransactionController::class, 'homeData']);
     Route::get('single-transactions/{id}', [TransactionController::class, 'singleTransactions']);
     Route::get('contact-us', [ContactController::class, 'getContact']);

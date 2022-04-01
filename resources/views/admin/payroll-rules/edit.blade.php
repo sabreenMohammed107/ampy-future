@@ -19,7 +19,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>{{ __('  الراتب الاساسى ') }}</label>
-                                <input type="text" id="newTitle" name="basic_salary" class="form-control"
+                                <input type="text" id="newTitle" name="basic_salary" value="{{ $row->basic_salary }}" class="form-control"
                                     placeholder=" الراتب الاساسى">
                             </div>
                         </div>
@@ -27,7 +27,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>{{ __('التسويات') }}</label>
-                                <input type="text" id="newTitle" name="settlements" class="form-control"
+                                <input type="text" id="newTitle" name="settlements" value="{{ $row->settlements }}" class="form-control"
                                     placeholder=" التسويات">
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>{{ __('البدلات') }}</label>
-                                <input type="text" id="newTitle" name="allowances" class="form-control"
+                                <input type="text" id="newTitle" name="allowances" value="{{ $row->allowances }}" class="form-control"
                                     placeholder=" البدلات">
                             </div>
                         </div>
@@ -43,14 +43,14 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>{{ __('الضرايب') }}</label>
-                                <input type="text" id="newTitle" name="taxes" class="form-control" placeholder=" الضرايب">
+                                <input type="text" id="newTitle" name="taxes"  value="{{ $row->taxes }}" class="form-control" placeholder=" الضرايب">
                             </div>
                         </div>
 
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label>{{ __('التأمينات') }}</label>
-                                <input type="text" id="newTitle" name="insurance" class="form-control"
+                                <input type="text" id="newTitle" name="insurance" value="{{ $row->insurance }}" class="form-control"
                                     placeholder=" التأمينات">
                             </div>
                         </div>
