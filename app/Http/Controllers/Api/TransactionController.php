@@ -106,6 +106,27 @@ class TransactionController extends BaseController
 
     public function sendNotificationrToUser($id)
     {
+       // get a user to get the fcm_token that already sent.               from mobile apps 
+       $user = User::findOrFail($id);
+
+       $data =[
+        'user_id' => 1,
+        'title_en' => 'been',
+        'title_en' => 'You have been accepted as instructor',
+        'body_en' => 'ttttttttttt',
+        'body_ar' => 'You',
+   ];
+     FCMNotification::Create($data);
+      FCMService::send(
+          $user->fcm_token,
+          [
+              'title' => 'your title',
+              'body' => 'your body',
+          ],
+          [
+            'message' => 'Extra Notification Data'
+          ],
+      );
         // get a user to get the fcm_token that already sent.               from mobile apps
         $user = User::findOrFail($id);
 
