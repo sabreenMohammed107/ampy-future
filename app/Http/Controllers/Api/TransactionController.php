@@ -106,7 +106,7 @@ class TransactionController extends BaseController
 
     public function sendNotificationrToUser($id)
     {
-       // get a user to get the fcm_token that already sent.               from mobile apps 
+       // get a user to get the fcm_token that already sent.               from mobile apps
        $user = User::findOrFail($id);
 
        $data =[

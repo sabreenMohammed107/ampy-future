@@ -28,7 +28,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('token-update', [AuthController::class, 'tokenUpdate']);
     Route::post('update-user', [AuthController::class, 'updateUser']);
     Route::post('all-notifications', [TransactionController::class, 'allTransactions']);
-    Route::post('update-transactions', [TransactionController::class, 'updateNotifications']);
+    // Route::post('update-transactions', [TransactionController::class, 'updateNotifications']);
     Route::get('home-data', [TransactionController::class, 'homeData']);
     Route::get('single-transactions/{id}', [TransactionController::class, 'singleTransactions']);
     Route::get('contact-us', [ContactController::class, 'getContact']);
