@@ -101,7 +101,7 @@ class AuthController extends BaseController
 
                     $user_id = auth()->user()->id;
                     $token = $request->device_token;
-                    User::where('id', $user_id)->update(['fcm_token', $token]);
+                    User::where('id', $user_id)->first()->update(['fcm_token', $token]);
                       return $this->sendResponse(new UserDataResource($user), 'تم التسجيل بنجاح');
                 }
                  elseif ($user->register_approved == 0) {
