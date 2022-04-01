@@ -22,7 +22,7 @@ class TransactionController extends BaseController
     //
     public function allTransactions(Request $request)
     {
-        $user = Auth::guard('api')->user();
+        $user = Auth::user();
         $data = [];
         $years = Year::all();
         array_push($data, YearResource::collection($years));
@@ -41,6 +41,7 @@ class TransactionController extends BaseController
 
         $transactions = $transactions->get();
         $transactions->account_no = $user->bank_account;
+        dd($transactions);
         array_push($data, TransactionResource::collection($transactions));
         if ($transactions->count() > 0) {
             return $this->sendResponse($data, 'كل المعاملات المالية');
