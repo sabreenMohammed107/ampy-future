@@ -25,7 +25,8 @@ class TransactionController extends BaseController
         $user = Auth::user();
         $data = [];
         $years = Year::all();
-        array_push($data, YearResource::collection($years));
+        $data[$years] = YearResource::collection($years);
+        // array_push($data, YearResource::collection($years));
 
         $transactions = Transaction::where('user_id', '=', $user->id)->orderBy('id', 'DESC');
 
@@ -41,8 +42,9 @@ class TransactionController extends BaseController
 
         $transactions = $transactions->get();
         $transactions->account_no = $user->bank_account;
-        dd($transactions);
-        array_push($data, TransactionResource::collection($transactions));
+
+        // array_push($data, TransactionResource::collection($transactions));
+        $data[$transactions] = TransactionResource::collection($transactions);
         if ($transactions->count() > 0) {
             return $this->sendResponse($data, 'كل المعاملات المالية');
         } else {
