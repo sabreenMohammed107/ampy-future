@@ -52,7 +52,7 @@ class ContactController extends BaseController
     }
     public function suggest(Request $request)
     {
-        $userid = Auth::guard('api')->id;
+        $userid = Auth::user()->id;
 
         $validator = Validator::make($request->all(), [
             'subject' => 'required',
