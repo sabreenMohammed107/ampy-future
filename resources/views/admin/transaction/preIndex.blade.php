@@ -63,11 +63,6 @@
 
 
                     </div>
-                </td>
-
-            </tr>
-            <!--/Edit Customer-->
-            <!-- Delete Modal -->
 
             <div class="modal modal-secondary" id="payroll{{ $row->id }}" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -126,6 +121,12 @@
                     </form>
                 </div>
             </div>
+                </td>
+
+            </tr>
+            <!--/Edit Customer-->
+            <!-- Delete Modal -->
+
         @endforeach
     </tbody>
 </table>
