@@ -4,7 +4,7 @@
     <section class="sidebar">
       <!-- Sidebar user panel -->
       <div class="user-panel">
-        <img src="{{ asset('adminassets/AMBY LOGO 34 PNG.png')}}" style="width: 50% !important" alt="">
+        <img src="{{ asset('adminassets/AMBY LOGO 34 PNG.webp')}}" style="width: 50% !important" alt="">
 
         {{-- <div class="pull-left image"> --}}
           {{-- <img src="{{ asset('adminassets/dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image" /> --}}

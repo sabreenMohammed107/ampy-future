@@ -4,7 +4,7 @@
             {{-- <a href="/">
                 <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
             </a> --}}
-            <img src="{{ asset('adminassets/AMBY LOGO 34 PNG.png')}}" width="250" alt="">
+            <img src="{{ asset('adminassets/AMBY LOGO 34 PNG.webp')}}" width="250" alt="">
         </x-slot>
 
         <!-- Session Status -->
