@@ -61,6 +61,7 @@
                 // }
             });
             // end dynamic
+            $('#months').prop('selectedIndex',0);
             $("#example1").dataTable();
             $('#example2').dataTable({
                 "bPaginate": true,
