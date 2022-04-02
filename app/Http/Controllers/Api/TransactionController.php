@@ -31,11 +31,11 @@ class TransactionController extends BaseController
 
 
         if (!empty($request->get("year_id"))) {
-            $transactions = Transaction::where('user_id', '=', $user->id)->orderBy('id', 'DESC');
+
             $year = Year::where('year', 'LIKE', '%'.$request->get("year_id").'%')->first();
 
             if ($year) {
-
+                $transactions = Transaction::where('user_id', '=', $user->id)->orderBy('id', 'DESC');
                 $transactions->whereHas('month', function ($query) use ($year) {
                     $query->where('year_id', '=', $year->id);
                 })->get();
