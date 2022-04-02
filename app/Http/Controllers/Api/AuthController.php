@@ -177,12 +177,14 @@ class AuthController extends BaseController
 
                 'lang' => 'required',
                 'device_token' => 'required',
+                'email'=>'unique:users',
             ]);
 
             if ($validator->fails()) {
                 return $this->convertErrorsToString($validator->messages());
             }
-            $user = Auth::guard('api')->user();
+            $user = Auth::user();
+            $user_id = $user->id;
             // $user = User::where('id', '=', $request->id)->first();
             $input = [
                 'n_id' => $request->n_id,
@@ -198,20 +200,9 @@ class AuthController extends BaseController
             }
             if ($user) {
 
-                $user->update($input);
-                // $device = Device::where('token', '=', $request->device_token)->first(); //laravel returns an integer
-                // $data = [
-                //     'token' => $request->device_token,
-                //     'user_id' => $user->id,
-                //     'status' => 1,
-                // ];
-                // if ($device) {
-                //     $device->update($data);
+                User::where('id', $user_id)->update($input);
 
-                // } else {
-                //     Device::create($data);
-                // }
-                $user_id = $user->id;
+
                 $token = $request->device_token;
                 User::where('id', $user_id)->update(['fcm_token', $token]);
                 return $this->sendResponse(new UserDataResource($user), 'تم تعديل البيانات بنجاح');
