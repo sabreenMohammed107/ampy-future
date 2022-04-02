@@ -1,6 +1,6 @@
 @extends('layout.web')
 
-@section('title', 'المستخدمين')
+@section('title', 'الموظفين')
 
 @section('content')
 
@@ -11,7 +11,7 @@
         <div class="card" style="background: #ffffff;box-shadow: 0 1px 1px rgb(0 0 0 / 10%);">
             <div class="box-header">
                 <h3 class="box-title">بيانات الرئيسية</h3>
-                <a href="{{ route('users.create') }}" class="btn btn-info btn-lg pull-right"> اضافة </a>
+                {{-- <a href="{{ route('users.create') }}" class="btn btn-info btn-lg pull-right"> اضافة </a> --}}
 
             </div>
 
