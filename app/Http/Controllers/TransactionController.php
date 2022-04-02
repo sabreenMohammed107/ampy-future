@@ -256,6 +256,7 @@ class TransactionController extends Controller
                 } else {
                     return redirect()->route($this->routeName . 'index')->with('حدث خطأ');
                 }
+                $transaction=null;
             }
 
             // Display a successful message ...
