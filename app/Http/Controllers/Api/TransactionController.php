@@ -32,8 +32,9 @@ class TransactionController extends BaseController
 
         if (!empty($request->get("year_id"))) {
             $year = Year::where('year', '=' . $request->get("year_id"))->first();
+            dd($year);
+
             if ($year) {
-                dd($year);
 
                 $transactions->whereHas('month', function ($query) use ($year) {
                     $query->where('year_id', '=', $year->id);
