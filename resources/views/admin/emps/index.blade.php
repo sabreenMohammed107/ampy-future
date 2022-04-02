@@ -46,7 +46,7 @@
         <p class="fa  fa-check"></p>
     </a>
 @endif
-    <a href="{{ route('users.edit', $row->id) }}">
+    <a href="{{ route('emps.edit', $row->id) }}">
         <p class=" fa fa-edit"></p>
     </a>
 
@@ -96,7 +96,7 @@
                             <div class="modal modal-danger" id="del{{ $row->id }}" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
-                                    <form action="{{ route('users.destroy', $row->id) }}" method="POST">
+                                    <form action="{{ route('emps.destroy', $row->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <div class="modal-content">
