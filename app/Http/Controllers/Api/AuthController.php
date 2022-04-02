@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\UserDataResource;
-use App\Models\Device;
+use App\Models\FCMNotification;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\User_payrol_rule;
@@ -47,7 +47,7 @@ class AuthController extends BaseController
             $user = User::create($input);
             $user->accessToken = $user->createToken('MyApp')->accessToken;
 
-//user payroll
+                    //user payroll
             $pay = new User_payrol_rule();
             $pay->user_id = $user->id;
             $pay->save();
@@ -102,9 +102,8 @@ class AuthController extends BaseController
                     $user_id = auth()->user()->id;
                     $token = $request->device_token;
                     User::where('id', $user_id)->first()->update(['fcm_token', $token]);
-                      return $this->sendResponse(new UserDataResource($user), 'تم التسجيل بنجاح');
-                }
-                 elseif ($user->register_approved == 0) {
+                    return $this->sendResponse(new UserDataResource($user), 'تم التسجيل بنجاح');
+                } elseif ($user->register_approved == 0) {
                     return $this->sendError('عذرا جارى تأكيد بياناتك');
                 } else {
                     return $this->sendError('عذرا تم رفض اشتراكك');
@@ -146,10 +145,10 @@ class AuthController extends BaseController
             //     } else {
             //         Device::create($data);
             //     }
-                $user_id = auth()->user()->id;
-                $token = $request->token;
-                User::where('id', $user_id)->update(['fcm_token', $token]);
-                return $this->sendResponse(null, 'تم تعديل البيانات بنجاح');
+            $user_id = auth()->user()->id;
+            $token = $request->token;
+            User::where('id', $user_id)->update(['fcm_token', $token]);
+            return $this->sendResponse(null, 'تم تعديل البيانات بنجاح');
 
             // }
 
@@ -160,8 +159,8 @@ class AuthController extends BaseController
     public function allNofications(Request $request)
     {
         $user = Auth::user();
-        $notifications = Transaction::where('user_id', '=', $user->id)->orderBy('id', 'DESC');
-       // dd($notifications);
+        $notifications = FCMNotification::where('user_id', '=', $user->id)->orderBy('id', 'DESC');
+        // dd($notifications);
 
         if ($notifications->count() > 0) {
             return $this->sendResponse($notifications, 'كل الاشعارات');
@@ -199,7 +198,6 @@ class AuthController extends BaseController
             }
             if ($user) {
 
-
                 $user->update($input);
                 // $device = Device::where('token', '=', $request->device_token)->first(); //laravel returns an integer
                 // $data = [
@@ -225,7 +223,8 @@ class AuthController extends BaseController
         }
 
     }
-    public function updateUserImage(Request $request){
+    public function updateUserImage(Request $request)
+    {
         try
         {
             $validator = Validator::make($request->all(), [
@@ -236,7 +235,7 @@ class AuthController extends BaseController
             if ($validator->fails()) {
                 return $this->convertErrorsToString($validator->messages());
             }
-            $user = Auth::guard('api')->user();
+            $user = Auth::user();
             // $user = User::where('id', '=', $request->id)->first();
 
             if ($user) {

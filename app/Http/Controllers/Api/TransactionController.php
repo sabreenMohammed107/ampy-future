@@ -31,7 +31,7 @@ class TransactionController extends BaseController
         $transactions = Transaction::where('user_id', '=', $user->id)->orderBy('id', 'DESC');
 
         if (!empty($request->get("year_id"))) {
-            $year = Year::where('year', '%like%' . $request->get("year_id") . '%')->first();
+            $year = Year::where('year', '=' . $request->get("year_id"))->first();
             if ($year) {
                 $transactions->whereHas('month', function ($query) use ($year) {
                     $query->where('year_id', '=', $year->id);
@@ -39,7 +39,6 @@ class TransactionController extends BaseController
             }
 
         }
-
         $transactions = $transactions->get();
         $transactions->account_no = $user->bank_account;
 
