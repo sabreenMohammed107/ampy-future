@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\UserDataResource;
 use App\Models\FCMNotification;
-use App\Models\Transaction;
 use App\Models\User;
 use App\Models\User_payrol_rule;
 use Illuminate\Http\Request;
@@ -47,7 +46,7 @@ class AuthController extends BaseController
             $user = User::create($input);
             $user->accessToken = $user->createToken('MyApp')->accessToken;
 
-                    //user payroll
+            //user payroll
             $pay = new User_payrol_rule();
             $pay->user_id = $user->id;
             $pay->save();
@@ -177,7 +176,7 @@ class AuthController extends BaseController
 
                 'lang' => 'required',
                 'device_token' => 'required',
-                'email'=>'unique:users',
+                'email' => 'unique:users',
             ]);
 
             if ($validator->fails()) {
@@ -202,7 +201,6 @@ class AuthController extends BaseController
 
                 User::where('id', $user_id)->update($input);
 
-
                 $token = $request->device_token;
                 User::where('id', $user_id)->update(['fcm_token', $token]);
                 return $this->sendResponse(new UserDataResource($user), 'تم تعديل البيانات بنجاح');
@@ -220,7 +218,7 @@ class AuthController extends BaseController
         {
             $validator = Validator::make($request->all(), [
                 'image' => 'required',
-
+                'device_token' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -236,7 +234,11 @@ class AuthController extends BaseController
 
                     $input['image'] = $this->UplaodImage($attach_image);
                 }
-                User::where('id', $user_id)->update($input);
+
+                $token = $request->device_token;
+                User::where('id', $user_id)->update(['image' => $this->UplaodImage($attach_image),
+                    'fcm_token', $token]);
+                // User::where('id', $user_id)->update(['fcm_token', $token]);
 
                 return $this->sendResponse(new UserDataResource($user), 'تم تعديل الصورة بنجاح');
             } else {
