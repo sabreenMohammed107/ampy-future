@@ -39,15 +39,17 @@ class TransactionController extends BaseController
                 $transactions->whereHas('month', function ($query) use ($year) {
                     $query->where('year_id', '=', $year->id);
                 })->get();
+                $transactions->account_no = $user->bank_account;
             }else{
                 $transactions =[];
             }
 
         }else{
             $transactions = Transaction::where('user_id', '=', $user->id)->orderBy('id', 'DESC')->get();
+            $transactions->account_no = $user->bank_account;
         }
         // $transactions = $transactions->get();
-        $transactions->account_no = $user->bank_account;
+
 
         // array_push($data, TransactionResource::collection($transactions));
         $data['transactions'] = TransactionResource::collection($transactions);
