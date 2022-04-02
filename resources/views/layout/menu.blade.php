@@ -41,6 +41,7 @@
 
 
             <li><a href="{{  route('faq.index') }}"><i class="fa fa-circle-o"></i> الاسئلة الشائعة </a></li>
+            <li><a href="{{  route('message.index') }}"><i class="fa fa-circle-o"></i>  رسائل التواصل </a></li>
 
         </ul>
         </li>

@@ -218,46 +218,44 @@ class TransactionController extends Controller
             $users = User_payrol_rule::all();
             foreach ($users as $user) {
 
-
                 $transaction = Transaction::where('user_id', $user->user_id)->where('month_id', $request->get('month_id'))->first();
-if($transaction){
-    $transaction->revision_status = 1;
-    $transaction->update();
-    // details
-    $details = Transaction_detail::where('transaction_id', $transaction->id)->first();
-    $total = ($details->net_salary + $details->settlements + $details->allowances) - ($details->taxes + $details->insurance);
 
+                if ($transaction) {
+                    $transaction->revision_status = 1;
+                    $transaction->update();
+                    // details
+                    $details = Transaction_detail::where('transaction_id', $transaction->id)->first();
+                    $total = ($details->net_salary + $details->settlements + $details->allowances) - ($details->taxes + $details->insurance);
 
-    $data = [
-        'title_ar' => 'تم إضافه دفعة ماليه جديده',
-        'body_ar' =>$total ,
-        'title_en' => 'A new payment has been added',
-        'body_en' =>  $total,
-        'status' => 'not_seen',
-    ];
+                    $data = [
+                        'title_ar' => 'تم إضافه دفعة ماليه جديده',
+                        'body_ar' => $total,
+                        'title_en' => 'A new payment has been added',
+                        'body_en' => $total,
+                        'status' => 'not_seen',
+                    ];
 
-    FCMService::send(
-        $user->fcm_token,
-        $data,
-        [
-            'message' => 'Extra Notification Data',
-        ],
-    );
-   //save f_c_m notification table
-    FCMNotification::create([
-        'title_ar' => 'تم إضافه دفعة ماليه جديده',
-        'body_ar' =>$total ,
-        'title_en' => 'A new payment has been added',
-        'body_en' =>  $total,
-        'status' => 'not_seen',
-        'user_id'=>  $user->id,
-    ]);
+                    FCMService::send(
+                        $user->fcm_token,
+                        $data,
+                        [
+                            'message' => 'Extra Notification Data',
+                        ],
+                    );
+                    //save f_c_m notification table
+                    FCMNotification::create([
+                        'title_ar' => 'تم إضافه دفعة ماليه جديده',
+                        'body_ar' => $total,
+                        'title_en' => 'A new payment has been added',
+                        'body_en' => $total,
+                        'status' => 'not_seen',
+                        'user_id' => $user->id,
+                    ]);
 
-
-}else{
-    return redirect()->route($this->routeName . 'index')->with('حدث خطأ');
-}
-        }
+                } else {
+                    return redirect()->route($this->routeName . 'index')->with('حدث خطأ');
+                }
+            }
 
             // Display a successful message ...
             return redirect()->route($this->routeName . 'index')->with('flash_success', 'تم الحفظ بنجاح');
