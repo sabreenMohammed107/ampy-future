@@ -220,7 +220,6 @@ class TransactionController extends Controller
             foreach ($users as $user) {
 
                 $transaction = Transaction::where('user_id', $user->user_id)->where('month_id', $request->get('month_id'))->first();
-
                 if ($transaction) {
                     $transaction->revision_status = 1;
                     $transaction->update();
@@ -256,7 +255,6 @@ class TransactionController extends Controller
                 } else {
                     return redirect()->route($this->routeName . 'index')->with('حدث خطأ');
                 }
-                $transaction=null;
             }
 
             // Display a successful message ...
