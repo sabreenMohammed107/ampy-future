@@ -84,7 +84,7 @@ class TransactionController extends Controller
             foreach ($users as $user) {
                 $transaction = new Transaction();
                 $transaction->transaction_date = Carbon::now();
-                $transaction->user_id = $user->id;
+                $transaction->user_id = $user->user_id;
                 $transaction->month_id = $request->get('month_id');
                 $transaction->payroll_status = 2;
                 $transaction->revision_status = 0;
