@@ -42,6 +42,7 @@ class TransactionController extends BaseController
                 $transactions->account_no = $user->bank_account;
             }else{
                 $transactions =[];
+
             }
 
         }else{
@@ -53,7 +54,7 @@ class TransactionController extends BaseController
 
         // array_push($data, TransactionResource::collection($transactions));
         $data['transactions'] = TransactionResource::collection($transactions);
-        if ($transactions->count() > 0) {
+        if ($transactions && $transactions->count() > 0) {
             return $this->sendResponse($data, 'كل المعاملات المالية');
         } else {
             return $this->sendResponse($data, 'لا يوجد معاملات حتى الان');
