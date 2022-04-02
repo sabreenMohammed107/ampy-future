@@ -17,7 +17,7 @@
 
 
 {!! Form::model($user, ['method' => 'PATCH','enctype' =>
-'multipart/form-data','route' => ['users.update', $user->id]]) !!}  <div class="box-body">
+'multipart/form-data','route' => ['emps.update', $user->id]]) !!}  <div class="box-body">
     <div class="box-body">
         <div class="widget-body-form row">
             <div class="col-lg-3">
@@ -117,7 +117,7 @@
     </div>
     <div class="col-xs-6 col-sm-6 col-md-6 text-center">
         <button type="submit" class="btn btn-primary">حفظ</button>
-        <a href="{{route('users.index')}}" class="btn btn-danger">إلغاء</a>
+        <a href="{{route('emps.index')}}" class="btn btn-danger">إلغاء</a>
     </div>
 </div>
         </div>
