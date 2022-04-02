@@ -121,7 +121,7 @@ class EmployeeController extends Controller
             return redirect()->route($this->route . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
 
         } catch (\Exception$e) {
-            return redirect()->route($this->route . 'index')->with('flash_danger', 'خطأ ...  !!!');
+            return redirect()->route($this->route . 'index')->with('flash_danger', $e->getMessage());
         }
     }
 
