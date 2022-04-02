@@ -59,7 +59,21 @@ class BaseController extends Controller
 
         return response()->json($response, $code);
     }
+    public function authCheck($error, $errorMessages = [], $code = 401)
+    {
+    	$response = [
+            'status' => false,
+            'message' => $error,
+        ];
 
+
+        if(!empty($errorMessages)){
+            $response['data'] = $errorMessages;
+        }
+
+
+        return response()->json($response, $code);
+    }
 
     /**
      * convert error from array to string.
