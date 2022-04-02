@@ -19,7 +19,7 @@
                                 <option value="">اختر </option>
 
                                 @foreach ($years as $year)
-                                    <option {{ now()->year == $year->year ? 'selected' : '' }} value="{{ $year->id }}">
+                                    <option  value="{{ $year->id }}">
                                         {{ $year->year }}</option>
                                 @endforeach
 
