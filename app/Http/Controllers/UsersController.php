@@ -109,7 +109,7 @@ class UsersController extends Controller
         $row->update(['register_approved'=>1]);
 
         // Display a successful message ...
-        return redirect()->route($this->route . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
+        return redirect()->route('emps.index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
     }
 
     public function userFinance(Request $request)
