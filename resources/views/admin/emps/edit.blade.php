@@ -53,7 +53,7 @@
     <div class="col-xs-6 col-sm-6 col-md-6">
         <div class="form-group">
             <strong>الشركات:</strong>
-            {!! Form::select('company', $companies,'company_id', array(['class' => 'form-control', 'disabled' => true])) !!}
+            {!! Form::select('company', $companies,'company_id', array('class' => 'form-control'),'disabled' => true) !!}
         </div>
     </div>
     <div class="col-xs-6 col-sm-6 col-md-6">
