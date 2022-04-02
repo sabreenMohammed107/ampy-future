@@ -64,7 +64,7 @@
                             <!--/Edit Customer-->
                               <!-- active Modal -->
 
-                              <div class="modal modal-success" id="activate{{ $row->id }}" tabindex="-1" role="dialog"
+                              <div class="modal modal-secondary" id="activate{{ $row->id }}" tabindex="-1" role="dialog"
                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <form action="{{ route('users.show', $row->id) }}" method="Get">

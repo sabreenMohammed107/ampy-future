@@ -122,10 +122,10 @@ class UsersController extends Controller
             $pay->taxes = $request->get('taxes');
             $pay->insurance = $request->get('insurance');
             $pay->update();
-            return redirect()->route($this->route . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
+            return redirect()->back()->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
 
         } catch (\Exception$e) {
-            return redirect()->route($this->route . 'index')->with('flash_danger', 'خطأ ...  !!!');
+            return redirect()->back()->with('flash_danger', 'خطأ ...  !!!');
         }
     }
     /**
