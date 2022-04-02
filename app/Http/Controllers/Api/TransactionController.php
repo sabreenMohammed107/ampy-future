@@ -82,6 +82,7 @@ class TransactionController extends BaseController
     public function singleTransactions($id)
     {
 
+
         if (Auth::guard('api')->check()) {
             $row = Transaction::where('id', '=', $id)->first();
             $details = Transaction_detail::where('transaction_id', $id)->first();
