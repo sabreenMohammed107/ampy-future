@@ -17,16 +17,16 @@ class TransactionDataResource extends JsonResource
         return [
 
             'transaction' => transForDataResource::make($this->transaction),
-            'basic_salary' => $this->net_salary,
+            'basic_salary' => $this->basic_salary,
             'settlements' => $this->settlements,
             'allowances' => $this->allowances,
-            'total_dues'=>$this->net_salary+$this->settlements+$this->allowances,
+            'total_dues'=>$this->basic_salary+$this->settlements+$this->allowances,
 
             'taxes' => $this->taxes,
             'insurance' => $this->insurance,
 
             'total_deductions'=>$this->taxes+$this->insurance,
-            'net'=> ($this->net_salary+$this->settlements+$this->allowances)-($this->taxes+$this->insurance),
+            'net'=> ($this->basic_salary+$this->settlements+$this->allowances)-($this->taxes+$this->insurance),
         ];
 
     }
