@@ -81,6 +81,7 @@ class TransactionController extends Controller
 
             // save transactions && details
             $users = User_payrol_rule::all();
+            dd([$users,$request->get('month_id')]);
             foreach ($users as $user) {
                 $transaction = new Transaction();
                 $transaction->transaction_date = Carbon::now();
