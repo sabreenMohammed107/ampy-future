@@ -50,13 +50,10 @@ class ContactController extends BaseController
 
     public function getPolicy(Request $request)
     {
-        if(Auth::guard('api')->check()){
+
             $policy = Faq::all();
             return $this->sendResponse(Policy_itemResource::collection($policy), 'البنود والشروط');
-        }else{
-            return $this->authCheck('حدث خطأ فى الدخول يرجى إعادة المحاولة');
 
-        }
 
 
 

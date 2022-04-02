@@ -230,13 +230,13 @@ class AuthController extends BaseController
             // $user = User::where('id', '=', $request->id)->first();
 
             if ($user) {
-
+                $user_id = $user->id;
                 if ($request->hasFile('image')) {
                     $attach_image = $request->file('image');
 
                     $input['image'] = $this->UplaodImage($attach_image);
                 }
-                $user->update($input);
+                User::where('id', $user_id)->update($input);
 
                 return $this->sendResponse(new UserDataResource($user), 'تم تعديل الصورة بنجاح');
             } else {
