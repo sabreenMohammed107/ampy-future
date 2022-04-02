@@ -102,11 +102,11 @@ class EmployeeController extends Controller
         try {
 
             $input = $request->all();
-            if ($input['password'] != null) {
-                $input['password'] = \Hash::make($input['password']);
-            } else {
-                unset($input['password']);
-            }
+            // if ($input['password'] != null) {
+            //     $input['password'] = \Hash::make($input['password']);
+            // } else {
+            //     unset($input['password']);
+            // }
 
             $input['company_id'] = $request->input('company');
             if ($request->hasFile('image')) {
