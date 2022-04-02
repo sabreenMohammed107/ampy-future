@@ -20,12 +20,12 @@ class TransactionDataResource extends JsonResource
             'basic_salary' => $this->basic_salary,
             'settlements' => $this->settlements,
             'allowances' => $this->allowances,
-            'total_dues'=>(string) $this->basic_salary+$this->settlements+$this->allowances,
+            'total_dues'=>(string) ($this->basic_salary+$this->settlements+$this->allowances),
 
             'taxes' => $this->taxes,
             'insurance' => $this->insurance,
 
-            'total_deductions'=>$this->taxes+$this->insurance,
+            'total_deductions'=> (string) ($this->taxes+$this->insurance),
             'net'=> (string) (($this->basic_salary+$this->settlements+$this->allowances)-($this->taxes+$this->insurance)),
         ];
 
