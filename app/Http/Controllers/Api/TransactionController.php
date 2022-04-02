@@ -31,9 +31,9 @@ class TransactionController extends BaseController
         $transactions = Transaction::where('user_id', '=', $user->id)->orderBy('id', 'DESC');
 
         if (!empty($request->get("year_id"))) {
-            dd($request->get("year_id"));
 
             $year = Year::where('year', 'LIKE', '%'.$request->get("year_id").'%')->first();
+            dd([$request->get("year_id"),$year]);
 
             if ($year) {
 
