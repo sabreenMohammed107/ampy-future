@@ -17,11 +17,11 @@
       </div>
 
       <ul class="sidebar-menu">
-        <li class="header">MAIN NAVIGATION</li>
+        {{-- <li class="header">MAIN NAVIGATION</li> --}}
 
         <li class="active treeview">
           <a href="{{ url('/dashboard') }}">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
+            <i class="fa fa-dashboard"></i> <span>الرئيسية</span>
           </a>
 
         </li>
@@ -30,6 +30,7 @@
           <a href="#">
             <i class="fa fa-files-o"></i>
             <span>الإعدادات</span>
+            <i class="fa fa-angle-left pull-right"></i>
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ route('users.index') }}"><i class="fa fa-circle-o"></i> المستخدمين </a></li>
@@ -54,14 +55,14 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{  route('year.index') }}"><i class="fa fa-circle-o"></i> السنوات المالية </a></li>
-            <li><a href="{{  route('month.index') }}"><i class="fa fa-circle-o"></i> الشهور </a></li>
+            {{-- <li><a href="{{  route('month.index') }}"><i class="fa fa-circle-o"></i> الشهور </a></li> --}}
 
             <li><a href="{{ route('emps.index') }}"><i class="fa fa-circle-o"></i> بيانات الموظفين </a></li>
             <li><a href="{{  route('payroll-rules.index') }}"><i class="fa fa-circle-o"></i> قواعد المرتبات </a></li>
 
             <li><a href="{{  route('transaction.index') }}"><i class="fa fa-circle-o"></i> الحركات المالية </a></li>
 
-            <li><a href="#"><i class="fa fa-circle-o"></i> إشعارات اخري </a></li>
+            {{-- <li><a href="#"><i class="fa fa-circle-o"></i> إشعارات اخري </a></li> --}}
           </ul>
         </li>
 

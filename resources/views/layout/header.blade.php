@@ -4,7 +4,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>A</b>LT</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Dashboard</b></span>
+      <span class="logo-lg"><b>لوحة التحكم</b></span>
 
     </a>
 
