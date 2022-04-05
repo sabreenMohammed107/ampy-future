@@ -35,7 +35,7 @@
                                 <td></td>
                                 <td>{{ $index + 1 }}</td>
 
-                                <td><td>{{date('d-m-Y', strtotime($row->suggest_date))}}</td></td>
+                                <td>{{date('d-m-Y', strtotime($row->suggest_date))}}</td>
                                 <td>{{ $row->subject }}</td>
                                 <td>{{ $row->message }}</td>
                                 <td>{{ $row->user->name ?? '' }}</td>
