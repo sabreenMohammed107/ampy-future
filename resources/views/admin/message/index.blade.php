@@ -22,10 +22,11 @@
                         <th data-field="state" data-checkbox="false"></th>
                         <th data-field="id">#</th>
 
-                        <th>الشهر باللغة العربية</th>
-                        <th>الهشر باللغه الانجليزية</th>
-                        <th>السنة</th>
-                        <th>الاجراءات</th>
+                        <th>التاريخ</th>
+                        <th>الموضوع</th>
+                        <th>الرسالة</th>
+                        <th>الراسل</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -34,27 +35,13 @@
                                 <td></td>
                                 <td>{{ $index + 1 }}</td>
 
-                                <td>{{ $row->month_ar }}</td>
-                                <td>{{ $row->month_en }}</td>
-                                <td>{{ $row->year->year ?? '' }}</td>
+                                <td><td>{{date('d-m-Y', strtotime($row->suggest_date))}}</td></td>
+                                <td>{{ $row->subject }}</td>
+                                <td>{{ $row->message }}</td>
+                                <td>{{ $row->user->name ?? '' }}</td>
 
 
-                                <td>
-                                    <div class="btn-group">
 
-
-                                        {{-- <a href="{{ route('month.edit', $row->id) }}">
-                                            <p class=" fa fa-edit"></p>
-                                        </a>
-
-
-                                        <a href="#del{{ $row->id }}" data-toggle="modal"
-                                            data-target="#del{{ $row->id }}">
-                                            <p class="fa  fa-times"></p>
-                                        </a> --}}
-
-                                    </div>
-                                </td>
 
                             </tr>
                             <!--/Edit Customer-->

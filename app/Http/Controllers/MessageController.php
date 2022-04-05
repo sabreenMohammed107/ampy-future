@@ -2,10 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Message;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
+    protected $object;
+    protected $viewName;
+    protected $routeName;
+
+    /**
+     * UserController Constructor.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function __construct(Message $object)
+    {
+        $this->middleware('auth');
+
+        $this->object = $object;
+        $this->viewName = 'admin.message.';
+        $this->routeName = 'message.';
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +31,9 @@ class MessageController extends Controller
      */
     public function index()
     {
-        //
+        $rows = Message::orderBy("created_at", "Desc")->get();
+
+        return view($this->viewName . 'index', compact('rows'));
     }
 
     /**
