@@ -235,13 +235,12 @@ class TransactionController extends Controller
                         'status' => 'not_seen',
                     ];
 
-                    FCMService::send(
-                        $user->fcm_token,
-                        $data,
+                    FCMService::send($user->fcm_token, $data,
                         [
                             'message' => 'Extra Notification Data',
                         ],
                     );
+
                     //save f_c_m notification table
                     FCMNotification::create([
                         'title_ar' => 'تم إضافه دفعة ماليه جديده',

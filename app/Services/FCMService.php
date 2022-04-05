@@ -3,7 +3,7 @@
 namespace App\Services;
 
 class FCMService
-{ 
+{
     public static function send($token, $notification, $data)
     {
         $fields = [
@@ -30,6 +30,6 @@ class FCMService
         curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
         $result = curl_exec($ch);
         curl_close($ch);
-        return $result;
+        // return $result;
     }
 }
