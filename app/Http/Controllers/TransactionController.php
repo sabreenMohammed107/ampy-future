@@ -216,15 +216,17 @@ class TransactionController extends Controller
 
         try
         {
-            $users = User_payrol_rule::all();
-            foreach ($users as $user) {
+            $users = User_payrol_rule::pluck('user_id');
 
-                $transaction = Transaction::where('user_id', $user->user_id)->where('month_id', $request->get('month_id'))->first();
-                if ($transaction) {
-                    $transaction->revision_status = 1;
-                    $transaction->update();
+            $ids=Transaction::whereIN('user_id', $users)->where('month_id', $request->get('month_id'))->get();
+            foreach ($ids as $trans) {
+
+                // $transaction = Transaction::where('user_id', $user->user_id)->where('month_id', $request->get('month_id'))->first();
+                if ($trans) {
+                    $trans->revision_status = 1;
+                    $trans->update();
                     // details
-                    $details = Transaction_detail::where('transaction_id', $transaction->id)->first();
+                    $details = Transaction_detail::where('transaction_id', $trans->id)->first();
                     $total = ($details->net_salary + $details->settlements + $details->allowances) - ($details->taxes + $details->insurance);
 
                     $data = [
@@ -235,7 +237,7 @@ class TransactionController extends Controller
                         'status' => 'not_seen',
                     ];
 
-                    FCMService::send($user->fcm_token, $data,
+                    FCMService::send($trans->user->fcm_token, $data,
                         [
                             'message' => 'Extra Notification Data',
                         ],
@@ -248,7 +250,7 @@ class TransactionController extends Controller
                         'title_en' => 'A new payment has been added',
                         'body_en' => $total,
                         'status' => 'not_seen',
-                        'user_id' => $user->id,
+                        'user_id' => $trans->user_id,
                     ]);
 
                 } else {
