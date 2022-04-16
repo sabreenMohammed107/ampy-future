@@ -203,8 +203,8 @@ class AuthController extends BaseController
                 $user->update($input);
 
 
-                $token = $request->device_token;
-                User::where('id', $user_id)->update(['fcm_token', $token]);
+                // $token = $request->device_token;
+                // User::where('id', $user_id)->update(['fcm_token', $token]);
                 return $this->sendResponse(new UserDataResource($user), 'تم تعديل البيانات بنجاح');
             } else {
                 return $this->sendError('لا يوجد مستخدم مطابق');
