@@ -176,7 +176,6 @@ class AuthController extends BaseController
             $validator = Validator::make($request->all(), [
 
                 'lang' => 'required',
-                'device_token' => 'required',
                 'email'=>'unique:users',
             ]);
 
@@ -184,7 +183,6 @@ class AuthController extends BaseController
                 return $this->convertErrorsToString($validator->messages());
             }
             $user = $request->user();
-            $user_id = $user->id;
             // $user = User::where('id', '=', $request->id)->first();
             $input = [
                 'n_id' => $request->n_id,
@@ -203,8 +201,7 @@ class AuthController extends BaseController
                 $user->update($input);
 
 
-                // $token = $request->device_token;
-                // User::where('id', $user_id)->update(['fcm_token', $token]);
+
                 return $this->sendResponse(new UserDataResource($user), 'تم تعديل البيانات بنجاح');
             } else {
                 return $this->sendError('لا يوجد مستخدم مطابق');
@@ -226,17 +223,15 @@ class AuthController extends BaseController
             if ($validator->fails()) {
                 return $this->convertErrorsToString($validator->messages());
             }
-            $user = Auth::user();
-            // $user = User::where('id', '=', $request->id)->first();
+            $user = $request->user();
 
             if ($user) {
-                $user_id = $user->id;
                 if ($request->hasFile('image')) {
                     $attach_image = $request->file('image');
 
                     $input['image'] = $this->UplaodImage($attach_image);
                 }
-                User::where('id', $request->id)->update($input);
+                $user->update($input);
 
                 return $this->sendResponse(new UserDataResource($user), 'تم تعديل الصورة بنجاح');
             } else {
