@@ -183,7 +183,7 @@ class AuthController extends BaseController
             if ($validator->fails()) {
                 return $this->convertErrorsToString($validator->messages());
             }
-            $user = Auth::user();
+            $user = $request->user();
             $user_id = $user->id;
             // $user = User::where('id', '=', $request->id)->first();
             $input = [
@@ -200,7 +200,7 @@ class AuthController extends BaseController
             }
             if ($user) {
 
-                User::where('id', $user_id)->update($input);
+                $user->update($input);
 
 
                 $token = $request->device_token;
