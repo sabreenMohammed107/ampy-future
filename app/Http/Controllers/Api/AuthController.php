@@ -237,6 +237,7 @@ class AuthController extends BaseController
             } else {
                 return $this->sendError('لا يوجد مستخدم مطابق');
             }
+
         } catch (\Exception$e) {
             return $this->sendError($e->getMessage(), 'حدث خطأ ما');
         }
