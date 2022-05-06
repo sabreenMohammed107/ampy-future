@@ -176,7 +176,7 @@ class AuthController extends BaseController
             $validator = Validator::make($request->all(), [
 
                 'lang' => 'required',
-                'email'=>'unique:users,email,'.$request->user()->email,
+                'email'=>'unique:users,email,'.$request->user()->id,
             ]);
 
             if ($validator->fails()) {
