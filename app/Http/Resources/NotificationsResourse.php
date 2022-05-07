@@ -23,6 +23,7 @@ class NotificationsResourse extends JsonResource
             'body_ar' => $this->body_ar,
             'body_en' => $this->body_en,
             'status' => $this->status,
+            'notifiy_date' =>$this->created_at->format('M d Y'),
 
         ];
 
