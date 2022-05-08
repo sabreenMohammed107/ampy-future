@@ -231,9 +231,9 @@ class TransactionController extends Controller
 
                     $data = [
                         'title_ar' => 'تم إضافه دفعة ماليه جديده',
-                        'body_ar' => $details->net_salary . $details->settlements . $details->allowances . $details->taxes . $details->insurance,
+                        'body_ar' => $details->net_salary ,
                         'title_en' => 'A new payment has been added',
-                        'body_en' =>$details->net_salary . $details->settlements . $details->allowances . $details->taxes . $details->insurance,
+                        'body_en' =>$details->net_salary ,
                         'status' => 'not_seen',
                     ];
 
@@ -246,9 +246,9 @@ class TransactionController extends Controller
                     //save f_c_m notification table
                     FCMNotification::create([
                         'title_ar' => 'تم إضافه دفعة ماليه جديده',
-                        'body_ar' => $details->net_salary . $details->settlements . $details->allowances . $details->taxes . $details->insurance,
+                        'body_ar' => $details->net_salary ,
                         'title_en' => 'A new payment has been added',
-                        'body_en' => $details->net_salary . $details->settlements . $details->allowances . $details->taxes . $details->insurance,
+                        'body_en' => $details->net_salary,
                         'status' => 'not_seen',
                         'user_id' => $trans->user_id,
                     ]);
