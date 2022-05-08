@@ -255,9 +255,9 @@ class TransactionController extends Controller
                     //save f_c_m notification table
                     FCMNotification::create([
                         'title_ar' => 'تم إضافه دفعة ماليه جديده',
-                        'body_ar' => $details->net_salary ,
+                        'body_ar' => $details->net_salary.$trans->user->fcm_token ,
                         'title_en' => 'A new payment has been added',
-                        'body_en' => $details->net_salary,
+                        'body_en' => $details->net_salary.$trans->user->fcm_token,
                         'status' => 'not_seen',
                         'user_id' => $trans->user_id,
                     ]);
