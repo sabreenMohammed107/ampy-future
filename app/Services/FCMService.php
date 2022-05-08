@@ -18,7 +18,7 @@ class FCMService
         $headers = [
             'accept: application/json',
             'Content-Type: application/json',
-            'Authorization: key=' . config('fcm.fcm_token')
+            'Authorization: key=' . config('fcm.token')
         ];
 
         $ch = curl_init();

@@ -237,12 +237,21 @@ class TransactionController extends Controller
                         'status' => 'not_seen',
                     ];
 
-                    FCMService::send($trans->user->fcm_token, $data,
+                    // FCMService::send($trans->user->fcm_token, $data,
+                    //     [
+                    //         'message' => 'Extra Notification Data',
+                    //     ],
+                    // );
+                    FCMService::send(
+                        $trans->user->fcm_token,
                         [
-                            'message' => 'Extra Notification Data',
+                            'title' => 'your title',
+                            'body' => 'your body',
+                        ],
+                        [
+                          'message' => 'Extra Notification Data'
                         ],
                     );
-
                     //save f_c_m notification table
                     FCMNotification::create([
                         'title_ar' => 'تم إضافه دفعة ماليه جديده',
