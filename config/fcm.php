@@ -18,5 +18,6 @@
 // config/fcm.php
 
 return [
-    'fcm_token' => env('FCM_SERVER_KEY', 'Your FCM server key'),
+    // 'fcm_token' => env('FCM_SERVER_KEY', 'Your FCM server key'),
+    'fcm_token' => "AAAA3TCDdrE:APA91bHborGVe-kYXv2ILUlYmCJj9_6g8dz08QidlYQc9i_xGCUUo0IDRoxaiLRyWVrgvfv3J3GwYBJe2ietTenT5IQBf7619j29fHDNzzdXK22jzXSVSkcT09vf0U4yBbL4afNRLZDH",
 ];

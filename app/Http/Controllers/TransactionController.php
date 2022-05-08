@@ -242,22 +242,26 @@ class TransactionController extends Controller
                     //         'message' => 'Extra Notification Data',
                     //     ],
                     // );
-                    FCMService::send(
-                        $trans->user->fcm_token,
-                        [
-                            'title' => 'your title',
-                            'body' => 'your body',
-                        ],
-                        [
-                          'message' => 'Extra Notification Data'
-                        ],
-                    );
+                    // FCMService::send(
+                    //     $trans->user->fcm_token,
+                    //     [
+                    //         'title' => 'your title',
+                    //         'body' => 'your body',
+                    //     ],
+                    //     [
+                    //       'message' => 'Extra Notification Data'
+                    //     ],
+                    // );
+
+
+
+
                     //save f_c_m notification table
                     FCMNotification::create([
                         'title_ar' => 'تم إضافه دفعة ماليه جديده',
-                        'body_ar' => $details->net_salary.$trans->user->fcm_token ,
+                        'body_ar' => $details->net_salary,
                         'title_en' => 'A new payment has been added',
-                        'body_en' => $details->net_salary.$trans->user->fcm_token,
+                        'body_en' => $details->net_salary,
                         'status' => 'not_seen',
                         'user_id' => $trans->user_id,
                     ]);
@@ -266,6 +270,38 @@ class TransactionController extends Controller
                     return redirect()->route($this->routeName . 'index')->with('حدث خطأ');
                 }
             }
+
+
+             //test sabreen
+             $firebaseToken = User::whereNotNull('fcm_token')->pluck('fcm_token')->all();
+
+             $SERVER_API_KEY = 'AAAA3TCDdrE:APA91bHborGVe-kYXv2ILUlYmCJj9_6g8dz08QidlYQc9i_xGCUUo0IDRoxaiLRyWVrgvfv3J3GwYBJe2ietTenT5IQBf7619j29fHDNzzdXK22jzXSVSkcT09vf0U4yBbL4afNRLZDH';
+
+             $data = [
+                 "registration_ids" => $firebaseToken,
+                 "notification" => [
+                     "title" => $request->title,
+                     "body" => $request->body,
+                 ]
+             ];
+             $dataString = json_encode($data);
+
+             $headers = [
+                 'Authorization: key=' . $SERVER_API_KEY,
+                 'Content-Type: application/json',
+             ];
+
+             $ch = curl_init();
+
+             curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+             curl_setopt($ch, CURLOPT_POST, true);
+             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+             curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+             $response = curl_exec($ch);
+             //end test
 
             // Display a successful message ...
             return redirect()->route($this->routeName . 'index')->with('flash_success', 'تم الحفظ بنجاح');
