@@ -148,7 +148,7 @@ class AuthController extends BaseController
             //     }
             $user_id = auth()->user()->id;
             $token = $request->token;
-            User::where('id', $user_id)->update(['fcm_token', $token]);
+            User::find($user_id)->update(['fcm_token', $token]);
             return $this->sendResponse(null, 'تم تعديل البيانات بنجاح');
 
             // }
