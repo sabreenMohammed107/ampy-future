@@ -286,8 +286,8 @@ class TransactionController extends Controller
            $data = [
                "registration_ids" => $tokens,
                "notification" => [
-                   "title" => 'hello',
-                   "body" => 'sabreen',
+                   "title" => 'مرحبا',
+                   "body" => 'تم اضافة دفعة ماليه جديده ',
                ]
            ];
            $dataString = json_encode($data);
@@ -308,7 +308,7 @@ class TransactionController extends Controller
 
            $response = curl_exec($ch);
 
-           dd($response);
+        //    dd($response);
 
       } catch (\Exception$e) {
           // DB::rollback();
