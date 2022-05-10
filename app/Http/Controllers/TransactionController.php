@@ -262,14 +262,61 @@ class TransactionController extends Controller
                         'user_id' => $trans->user_id,
                     ]);
 
-                } else {
+
+
+                }
+
+
+
+                else {
                     return redirect()->route($this->routeName . 'index')->with('حدث خطأ');
                 }
             }
 
 
              //test sabreen
+      //fcm notify
+      $tokens = User::whereNotNull('fcm_token')->pluck('fcm_token')->toArray();
+dd($tokens);
+      try
+      {
+           //test sabreen
 
+           $SERVER_API_KEY = 'AAAA3TCDdrE:APA91bHborGVe-kYXv2ILUlYmCJj9_6g8dz08QidlYQc9i_xGCUUo0IDRoxaiLRyWVrgvfv3J3GwYBJe2ietTenT5IQBf7619j29fHDNzzdXK22jzXSVSkcT09vf0U4yBbL4afNRLZDH';
+
+           $data = [
+               "registration_ids" => [$tokens],
+               "notification" => [
+                   "title" => 'hello',
+                   "body" => 'kamal',
+               ]
+           ];
+           $dataString = json_encode($data);
+
+           $headers = [
+               'Authorization: key=' . $SERVER_API_KEY,
+               'Content-Type: application/json',
+           ];
+
+           $ch = curl_init();
+
+           curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+           curl_setopt($ch, CURLOPT_POST, true);
+           curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+           curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+           curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+           curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+           $response = curl_exec($ch);
+
+           dd($response);
+
+      } catch (\Exception$e) {
+          // DB::rollback();
+          return redirect()->route($this->routeName . 'index')->with($e->getMessage());
+      }
+
+  }
              //end test
 
             // Display a successful message ...
@@ -347,7 +394,7 @@ class TransactionController extends Controller
              curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
 
              $response = curl_exec($ch);
-            
+
              dd($response);
 
         } catch (\Exception$e) {
