@@ -277,7 +277,6 @@ class TransactionController extends Controller
              //test sabreen
       //fcm notify
       $tokens = User::whereNotNull('fcm_token')->pluck('fcm_token')->toArray();
-dd($tokens);
       try
       {
            //test sabreen
