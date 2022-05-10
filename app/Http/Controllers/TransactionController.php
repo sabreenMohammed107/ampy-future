@@ -288,7 +288,7 @@ dd($tokens);
                "registration_ids" => [$tokens],
                "notification" => [
                    "title" => 'hello',
-                   "body" => 'kamal',
+                   "body" => 'sabreen',
                ]
            ];
            $dataString = json_encode($data);
