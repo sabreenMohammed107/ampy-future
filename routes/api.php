@@ -20,9 +20,9 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
+Route::get('testNotification', [TransactionController::class,'testNotification'])->name('testNotification');
 Route::get('policy', [ContactController::class, 'getPolicy']);
 Route::middleware('auth:api')->group( function () {
     Route::post('token-update', [AuthController::class, 'tokenUpdate']);

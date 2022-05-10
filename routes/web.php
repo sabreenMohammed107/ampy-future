@@ -22,14 +22,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
  */
-
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('/test_not', [TransactionController::class, 'testNotification'])->name('testNotification');
+
 
 Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::resource('users', UsersController::class);
@@ -49,6 +47,7 @@ Route::get('dynamicTransaction/fetch', [TransactionController::class,'yearData']
 Route::get('updateDetailsValues', [TransactionController::class,'updateDetails'])->name('updateDetailsValues');
 //sendNotification
 Route::post('sendNotification', [TransactionController::class,'sendNotification'])->name('sendNotification');
+
 
 });
 
