@@ -26,7 +26,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/test_not', [TransactionController::class, 'testNotification'])->name('testNotification');
+// Route::get('/test_not', [TransactionController::class, 'testNotification'])->name('testNotification');
 
 
 Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
