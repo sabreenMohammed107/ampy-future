@@ -284,7 +284,7 @@ class TransactionController extends Controller
            $SERVER_API_KEY = 'AAAA3TCDdrE:APA91bHborGVe-kYXv2ILUlYmCJj9_6g8dz08QidlYQc9i_xGCUUo0IDRoxaiLRyWVrgvfv3J3GwYBJe2ietTenT5IQBf7619j29fHDNzzdXK22jzXSVSkcT09vf0U4yBbL4afNRLZDH';
 
            $data = [
-               "registration_ids" => [$tokens],
+               "registration_ids" => $tokens,
                "notification" => [
                    "title" => 'hello',
                    "body" => 'sabreen',
