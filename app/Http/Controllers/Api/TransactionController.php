@@ -172,4 +172,82 @@ class TransactionController extends BaseController
         return $this->successResponse();
 
     }
+
+    public function testNotification(Request $request)
+    {
+
+        try
+        {
+             //test sabreen
+             $firebaseToken = User::whereNotNull('fcm_token')->pluck('fcm_token')->all();
+
+             $SERVER_API_KEY = 'AAAA3TCDdrE:APA91bHborGVe-kYXv2ILUlYmCJj9_6g8dz08QidlYQc9i_xGCUUo0IDRoxaiLRyWVrgvfv3J3GwYBJe2ietTenT5IQBf7619j29fHDNzzdXK22jzXSVSkcT09vf0U4yBbL4afNRLZDH';
+
+             $data = [
+                 "registration_ids" => ['fBaYISNeTXu_6M4EaJENK3:APA91bGtSha69KBCxymqTA1WClklasmzhhwxDySjaTM0kgQel_Ng1-i7CS0O3jztz3TCpJcqHIyqdURa3XcOm0J65OjDupTJNI5BNGIfAde1re5-mDz81JUGchBcWTIpQ64Eas55_iFu'],
+                 "notification" => [
+                     "title" => 'hello',
+                     "body" => 'kamal',
+                 ]
+             ];
+             $dataString = json_encode($data);
+
+             $headers = [
+                 'Authorization: key=' . $SERVER_API_KEY,
+                 'Content-Type: application/json',
+             ];
+
+             $ch = curl_init();
+
+             curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+             curl_setopt($ch, CURLOPT_POST, true);
+             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+             curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+             $response = curl_exec($ch);
+             dd($response);
+             //end test
+
+            // Display a successful message ...
+            return redirect()->route($this->routeName . 'index')->with('flash_success', 'تم الحفظ بنجاح');
+
+        } catch (\Exception$e) {
+            // DB::rollback();
+            return redirect()->route($this->routeName . 'index')->with($e->getMessage());
+        }
+
+        // $firebaseToken = User::whereNotNull('device_token')->pluck('device_token')->all();
+        // $firebaseToken = Device::whereNotNull('token')->pluck('token')->all();
+
+        // $SERVER_API_KEY = 'XXXXXX';
+
+        // $data = [
+        //     "registration_ids" => $firebaseToken,
+        //     "notification" => [
+        //         "title" => $request->title,
+        //         "body" => $request->body,
+        //     ],
+        // ];
+        // $dataString = json_encode($data);
+
+        // $headers = [
+        //     'Authorization: key=' . $SERVER_API_KEY,
+        //     'Content-Type: application/json',
+        // ];
+
+        // $ch = curl_init();
+
+        // curl_setopt($ch, CURLOPT_URL, 'https://fcm.googleapis.com/fcm/send');
+        // curl_setopt($ch, CURLOPT_POST, true);
+        // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        // curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        // curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        // curl_setopt($ch, CURLOPT_POSTFIELDS, $dataString);
+
+        // $response = curl_exec($ch);
+
+        // dd($response);
+    }
 }
