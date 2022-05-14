@@ -238,16 +238,16 @@ class TransactionController extends Controller
                     ];
 
 
-                    FCMService::send(
-                        $trans->user->fcm_token,
-                        [
-                            'title' => 'your title',
-                            'body' => 'your body',
-                        ],
-                        [
-                          'message' => 'Extra Notification Data'
-                        ],
-                    );
+                    // FCMService::send(
+                    //     $trans->user->fcm_token,
+                    //     [
+                    //         'title' => 'your title',
+                    //         'body' => 'your body',
+                    //     ],
+                    //     [
+                    //       'message' => 'Extra Notification Data'
+                    //     ],
+                    // );
 
 
 

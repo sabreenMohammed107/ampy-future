@@ -1,6 +1,6 @@
 @extends('layout.web')
 
-@section('title', 'الشهور')
+@section('title', 'الرسائل')
 
 @section('content')
 
