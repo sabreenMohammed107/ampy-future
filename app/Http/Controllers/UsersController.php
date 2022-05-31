@@ -77,6 +77,7 @@ class UsersController extends Controller
 
                 $input['image'] = $this->UplaodImage($attach_image);
             }
+            $input['emp_status'] =1;
             $user = $this->model::create($input);
 //user payroll
             // $pay = new User_payrol_rule();
@@ -200,6 +201,8 @@ public function deactive($id){
 
                 $input['image'] = $this->UplaodImage($attach_image);
             }
+
+            $input['emp_status'] = 1;
             $user = $this->model::findOrFail($id);
             $user->update($input);
 
