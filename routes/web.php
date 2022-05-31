@@ -31,6 +31,10 @@ Route::get('/dashboard', function () {
 
 Route::group(['middleware' => 'auth', 'prefix' => 'dashboard'], function () {
     Route::resource('users', UsersController::class);
+    //deactive
+    Route::get('deactive/{id}',[UsersController::class,'deactive'])->name('deactive');
+      //deactive
+      Route::get('undo/{id}',[UsersController::class,'undo'])->name('undo');
     Route::resource('emps', EmployeeController::class);
     Route::resource('company', CompanyController::class);
     Route::resource('bank', BankController::class);

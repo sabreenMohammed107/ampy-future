@@ -70,6 +70,10 @@ class EmployeeController extends Controller
         $row = $this->model::findOrFail($id);
 
         $row->update(['register_approved'=>1]);
+         //user payroll
+         $pay = new User_payrol_rule();
+         $pay->user_id = $id;
+         $pay->save();
 
         // Display a successful message ...
         return redirect()->route($this->route . 'index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');

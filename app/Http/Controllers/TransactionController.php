@@ -80,7 +80,9 @@ class TransactionController extends Controller
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
             // save transactions && details
-            $users = User_payrol_rule::all();
+            $users =User_payrol_rule::whereHas('user', function ($q) {
+                $q->where('register_approved', 1);
+            })->orderBy("created_at", "Desc")->get();
             // dd([$users,$request->get('month_id')]);
             foreach ($users as $user) {
                 $transaction = new Transaction();
@@ -216,7 +218,10 @@ class TransactionController extends Controller
 
         try
         {
-            $users = User_payrol_rule::pluck('user_id');
+
+            $users = User_payrol_rule::whereHas('user', function ($q) {
+                $q->where('register_approved', 1);
+            })->orderBy("created_at", "Desc")->pluck('user_id');
 
             $ids=Transaction::whereIN('user_id', $users)->where('month_id', $request->get('month_id'))->get();
             foreach ($ids as $trans) {

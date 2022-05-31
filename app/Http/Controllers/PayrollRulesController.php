@@ -32,7 +32,9 @@ class PayrollRulesController extends Controller
      */
     public function index()
     {
-        $rows = User_payrol_rule::orderBy("created_at", "Desc")->get();
+        $rows = User_payrol_rule::whereHas('user', function ($q) {
+            $q->where('register_approved', 1);
+        })->orderBy("created_at", "Desc")->get();
 
         return view($this->viewName . 'index', compact('rows'));
     }

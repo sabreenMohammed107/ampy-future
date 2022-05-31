@@ -48,9 +48,9 @@ class AuthController extends BaseController
             $user->accessToken = $user->createToken('MyApp')->accessToken;
 
                     //user payroll
-            $pay = new User_payrol_rule();
-            $pay->user_id = $user->id;
-            $pay->save();
+            // $pay = new User_payrol_rule();
+            // $pay->user_id = $user->id;
+            // $pay->save();
             DB::commit();
             // Enable foreign key checks!
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
@@ -106,7 +106,11 @@ class AuthController extends BaseController
                     return $this->sendResponse(new UserDataResource($user), 'تم التسجيل بنجاح');
                 } elseif ($user->register_approved == 0) {
                     return $this->sendError('عذرا جارى تأكيد بياناتك');
-                } else {
+                }
+                elseif ($user->register_approved == 2) {
+                    return $this->sendError('عذرا تم ايقاف اشتراكك');
+                }
+                 else {
                     return $this->sendError('عذرا تم رفض اشتراكك');
                 }
 

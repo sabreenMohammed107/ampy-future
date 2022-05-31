@@ -33,7 +33,7 @@
                     <tbody>
                         @foreach ($rows as $index => $row)
 
-                            <tr>
+                            <tr >
                                 <td></td>
                                 <td>{{ $index + 1 }}</td>
 

@@ -111,6 +111,37 @@ class UsersController extends Controller
         // Display a successful message ...
         return redirect()->route('emps.index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
     }
+ /**
+     * Display the get deactive.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+public function deactive($id){
+    $row = $this->model::findOrFail($id);
+
+    $row->update(['register_approved'=>2]);
+
+    // Display a successful message ...
+    return redirect()->route('emps.index')->with('flash_success', 'تم تعطيل  المستخدم بنجاح');
+}
+
+
+//undo
+ /**
+     * Display the get undo.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function undo($id){
+        $row = $this->model::findOrFail($id);
+
+        $row->update(['register_approved'=>1]);
+
+        // Display a successful message ...
+        return redirect()->route('emps.index')->with('flash_success', 'تم إعادة  المستخدم بنجاح');
+    }
 
     public function userFinance(Request $request)
     {
