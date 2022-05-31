@@ -108,7 +108,10 @@ class UsersController extends Controller
         $row = $this->model::findOrFail($id);
 
         $row->update(['register_approved'=>1]);
-
+//user payroll
+            $pay = new User_payrol_rule();
+            $pay->user_id = $row->id;
+            $pay->save();
         // Display a successful message ...
         return redirect()->route('emps.index')->with('flash_success', 'تم تعديل بيانات المستخدم بنجاح');
     }
