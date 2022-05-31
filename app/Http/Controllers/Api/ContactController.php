@@ -9,6 +9,7 @@ use App\Http\Resources\Policy_itemResource;
 use App\Models\Company;
 use App\Models\Faq;
 use App\Models\Message;
+use App\Models\Policy_item;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -51,7 +52,7 @@ class ContactController extends BaseController
     public function getPolicy(Request $request)
     {
 
-            $policy = Faq::all();
+            $policy = Policy_item::all();
             return $this->sendResponse(Policy_itemResource::collection($policy), 'البنود والشروط');
 
 

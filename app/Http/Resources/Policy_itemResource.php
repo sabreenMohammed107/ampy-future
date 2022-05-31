@@ -15,10 +15,10 @@ class Policy_itemResource extends JsonResource
     {
 
         return [
-            "question_ar"=>$this->question_ar ?? '',
-            'question_en'=>$this->question_en ?? '',
-            'answer_ar'=>$this->answer_ar ?? '',
-            'answer_en'=>$this->answer_en ?? '',
+            "item_ar"=>$this->item_ar ?? '',
+            'item_en'=>$this->item_en ?? '',
+            'details_en'=>$this->details_en ?? '',
+            'details_ar'=>$this->details_ar ?? '',
         ];
 
     }
