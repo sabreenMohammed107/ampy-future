@@ -28,6 +28,7 @@
                         <th> البدلات</th>
                         <th> الضرائب</th>
                         <th> التأمينات</th>
+                        <th> اجمالي</th>
                         <th>الاجراءات</th>
                         </tr>
                     </thead>
@@ -45,7 +46,7 @@
                                 <td>{{ $row->taxes ?? '' }}</td>
                                 <td>{{ $row->insurance ?? '' }}</td>
 
-
+                                <td>{{  ($row->basic_salary+$row->settlements+$row->allowances)-($row->taxes + $row->insurance) }}</td>
                                 <td>
                                     <div class="btn-group">
 
