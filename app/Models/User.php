@@ -45,12 +45,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
     public function transation(){
-        return $this->hasMany('App\Models\Transaction','user_id','id')->orderBy("id", "Desc");
+        return $this->hasMany('App\Models\Transaction','user_id','id')->where('revision_status',1)->orderBy("id", "Desc");
       }
 
       public function latestTransation()
       {
-        return $this->hasOne('App\Models\Transaction')->latest();
+        return $this->hasOne('App\Models\Transaction')->where('revision_status',1)->latest();
         //   return $this->transation()->latest();
       }
     /**
