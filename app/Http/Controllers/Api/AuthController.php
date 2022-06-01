@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
 use Validator;
-
+use App\Http\Middleware\Localization;
 class AuthController extends BaseController
 {
     /**

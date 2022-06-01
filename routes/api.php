@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Middleware\Localization;
 /*
 |--------------------------------------------------------------------------
 | API Routes
