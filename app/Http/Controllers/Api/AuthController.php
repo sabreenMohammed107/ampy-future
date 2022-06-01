@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Password;
 use Validator;
-use App\Http\Middleware\Localization;
+
 class AuthController extends BaseController
 {
     /**
@@ -103,20 +103,19 @@ class AuthController extends BaseController
                     $token = $request->device_token;
 
                     User::find($user_id)->update(['fcm_token'=>$token]);
-
-                    return $this->sendResponse(new UserDataResource($user),  __("links.register"));
+                    return $this->sendResponse(new UserDataResource($user),  __("links.loginSuccess"));
                 } elseif ($user->register_approved == 0) {
-                    return $this->sendError('عذرا جارى تأكيد بياناتك');
+                    return $this->sendResponse(new UserDataResource($user),  __("links.loginApprived"));
                 }
                 elseif ($user->register_approved == 2) {
-                    return $this->sendError('عذرا تم ايقاف اشتراكك');
+                    return $this->sendResponse(new UserDataResource($user),  __("links.loginblock"));
                 }
                  else {
-                    return $this->sendError('عذرا تم رفض اشتراكك');
+                    return $this->sendResponse(new UserDataResource($user),  __("links.logindecline"));
                 }
 
             } else {
-                return $this->sendError('كود المستخدم او كلمه السر غير صحيحة');
+                return $this->sendError( __("links.loginError"));
             }
         } catch (\Exception$e) {
             return $this->sendError($e->getMessage(), 'حدث خطأ ما !!');

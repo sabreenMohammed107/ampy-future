@@ -196,5 +196,12 @@ PREMIER UPVC comes in a different color based on the market and customer needs f
 'phone_regex'=>'Invalid Mobile Number',
 'captcha_required'=>' Captcha Required',
 'password_same'=>'Password Error',
+/*===========================api Msg=======================*/
+
+'loginSuccess'=>'Login Success',
+'loginApprived'=>'Wait For Approve',
+'loginblock'=>'Your Account Locked',
+'logindecline'=>'decline Your Register',
+'loginError'=>'Error In Code Or Password',
 
 ];
