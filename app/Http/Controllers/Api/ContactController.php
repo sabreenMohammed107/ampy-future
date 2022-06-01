@@ -22,12 +22,12 @@ class ContactController extends BaseController
         if(Auth::guard('api')->check()){
             $company = Company::where('id', '=', 1)->first();
             if ($company) {
-                return $this->sendResponse(new CompanyResource($company), 'بيانات الشركة');
+                return $this->sendResponse(new CompanyResource($company), ' __("links.companyData")');
             } else {
-                return $this->sendError('حدث خطأ فى بيانات الشركة ');
+                return $this->sendError(' __("links.companyDataError")');
             }
         }else{
-            return $this->authCheck('حدث خطأ فى الدخول يرجى إعادة المحاولة');
+            return $this->authCheck(' __("links.checkLog")');
 
         }
 
@@ -39,9 +39,9 @@ class ContactController extends BaseController
     {
         if(Auth::guard('api')->check()){
             $faqs = Faq::all();
-            return $this->sendResponse(FaqResource::collection($faqs), 'الاشئلة والاجابة');
+            return $this->sendResponse(FaqResource::collection($faqs), ' __("links.faq")');
         }else{
-            return $this->authCheck('حدث خطأ فى الدخول يرجى إعادة المحاولة');
+            return $this->authCheck(' __("links.checkLog")');
 
         }
 
@@ -53,7 +53,7 @@ class ContactController extends BaseController
     {
 
             $policy = Policy_item::all();
-            return $this->sendResponse(Policy_itemResource::collection($policy), 'البنود والشروط');
+            return $this->sendResponse(Policy_itemResource::collection($policy), ' __("links.policy")');
 
 
 
@@ -64,12 +64,12 @@ class ContactController extends BaseController
         if(Auth::guard('api')->check()){
             $company = Company::where('id', '=', 1)->first();
             if ($company) {
-                return $this->sendResponse(new aboutUsResource($company), 'بيانات الشركة');
+                return $this->sendResponse(new aboutUsResource($company), ' __("links.companyData")');
             } else {
-                return $this->sendError('حدث خطأ فى بيانات الشركة ');
+                return $this->sendError(' __("links.companyDataError") ');
             }
         }else{
-            return $this->authCheck('حدث خطأ فى الدخول يرجى إعادة المحاولة');
+            return $this->authCheck(' __("links.checkLog")');
 
         }
 
@@ -97,15 +97,15 @@ class ContactController extends BaseController
                     'suggest_date' => Carbon::now(),
                 ];
                 Message::create($data);
-                return $this->successResponse('تم الاسال بنجاح');
+                return $this->successResponse(' __("links.sendSuccess")');
 
             } catch (\Exception$ex) {
-                return $this->sendError($ex->getMessage(), 'حدث خطا فى ارسال الرساله!!');
+                return $this->sendError($ex->getMessage(), ' __("links.sendError")');
             }
 
 
         }else{
-            return $this->authCheck('حدث خطأ فى الدخول يرجى إعادة المحاولة');
+            return $this->authCheck(' __("links.checkLog")');
 
         }
 

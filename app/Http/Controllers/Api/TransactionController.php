@@ -52,12 +52,12 @@ class TransactionController extends BaseController
             // array_push($data, TransactionResource::collection($transactions));
             $data['transactions'] = TransactionResource::collection($transactions);
             if ($transactions && $transactions->count() > 0) {
-                return $this->sendResponse($data, 'كل المعاملات المالية');
+                return $this->sendResponse($data, ' __("links.allTransactions")');
             } else {
-                return $this->sendResponse($data, 'لا يوجد معاملات حتى الان');
+                return $this->sendResponse($data, ' __("links.noTransactions")');
             }
         }else{
-            return $this->authCheck('حدث خطأ فى الدخول يرجى إعادة المحاولة');
+            return $this->authCheck(' __("links.checkLog")');
 
         }
 
@@ -69,9 +69,9 @@ class TransactionController extends BaseController
     {
         if(Auth::guard('api')->check()){
             $user = Auth::guard('api')->user();
-            return $this->sendResponse(new UserDataResource($user), 'بيانات الصفحة الرئيسيه');
+            return $this->sendResponse(new UserDataResource($user), ' __("links.homeData")');
         }else{
-            return $this->authCheck('حدث خطأ فى الدخول يرجى إعادة المحاولة');
+            return $this->authCheck(' __("links.checkLog")');
 
         }
 
@@ -87,12 +87,12 @@ class TransactionController extends BaseController
             $row = Transaction::where('id', '=', $id)->first();
             $details = Transaction_detail::where('transaction_id', $id)->first();
             if ($details) {
-                return $this->sendResponse(new TransactionDataResource($details), 'بيانات المعاملة');
+                return $this->sendResponse(new TransactionDataResource($details), '__("links.singleTrans")');
             } else {
-                return $this->sendError('حدث خطأ لا توجد معاملة ');
+                return $this->sendError('__("links.noSingleTrans")');
             }
         } else {
-            return $this->authCheck('حدث خطأ فى الدخول يرجى إعادة المحاولة');
+            return $this->authCheck(' __("links.checkLog")');
 
         }
 
@@ -104,7 +104,7 @@ class TransactionController extends BaseController
         $notifications = FCMNotification::where('user_id', $user_id)->orderBy('id', 'desc')->limit(10)->get();
 
         // return NotificationsResourse::collection($notifications);
-        return $this->sendResponse(NotificationsResourse::collection($notifications), ' الاشعارات');
+        return $this->sendResponse(NotificationsResourse::collection($notifications), ' __("links.allNotifications")');
 
     }
 
@@ -117,7 +117,7 @@ class TransactionController extends BaseController
 
             return $this->successResponse();
         }else{
-            return $this->authCheck('حدث خطأ فى الدخول يرجى إعادة المحاولة');
+            return $this->authCheck(' __("links.checkLog")');
 
         }
 

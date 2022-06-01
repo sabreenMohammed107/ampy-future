@@ -203,5 +203,25 @@ PREMIER UPVC comes in a different color based on the market and customer needs f
 'loginblock'=>'Your Account Locked',
 'logindecline'=>'decline Your Register',
 'loginError'=>'Error In Code Or Password',
+'generalError'=>'something error !!',
+'editMsg'=>'Editing Sccessfully',
+'waitActive'=>'register success wait activate!',
+'allNotifications'=>'All Notifications',
+'noNotifications'=>'There is no notifications',
+'checkLog'=>'Error In Login Try Again',
+'companyData'=>'Company Data',
 
+'companyDataError'=>'Error In Company Data',
+'faq'=>'frequently asked questions',
+
+'policy'=>'Policy',
+'sendSuccess'=>'Send Successfully',
+'sendError'=>'Send Error',
+
+'allTransactions'=>'All Transactions',
+'noTransactions'=>'there is no Transactions',
+
+'homeData'=>'Home Data',
+'singleTrans'=>'Single Transaction',
+'noSingleTrans'=>'this transaction not found',
 ];

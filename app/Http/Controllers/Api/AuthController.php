@@ -54,11 +54,12 @@ class AuthController extends BaseController
             DB::commit();
             // Enable foreign key checks!
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-            return $this->sendResponse(new UserDataResource($user), 'تم التسجيل بنجاح انتظر التفعيل !');
+
+            return $this->sendResponse(new UserDataResource($user),  __("links.waitActive"));
 
         } catch (\Exception$e) {
             DB::rollback();
-            return $this->sendError($e->getMessage(), 'حدث خطأ ما');
+            return $this->sendError($e->getMessage(),  __("links.generalError"));
         }
     }
 
@@ -86,18 +87,6 @@ class AuthController extends BaseController
                 $user->accessToken = $user->createToken('MyApp')->accessToken;
 //devices
                 if ($user->register_approved == 1) {
-                    // $device = Device::where('token', '=', $request->device_token)->first(); //laravel returns an integer
-                    // $data = [
-                    //     'token' => $request->device_token,
-                    //     'user_id' => $user->id,
-                    //     'status' => 1,
-                    // ];
-                    // if ($device) {
-                    //     $device->update($data);
-
-                    // } else {
-                    //     Device::create($data);
-                    // }
 
                     $user_id = auth()->user()->id;
                     $token = $request->device_token;
@@ -118,7 +107,7 @@ class AuthController extends BaseController
                 return $this->sendError( __("links.loginError"));
             }
         } catch (\Exception$e) {
-            return $this->sendError($e->getMessage(), 'حدث خطأ ما !!');
+            return $this->sendError($e->getMessage(),  __("links.generalError"));
         }
     }
 
@@ -153,12 +142,12 @@ class AuthController extends BaseController
             $user_id = auth()->user()->id;
             $token = $request->token;
             User::find($user_id)->update(['fcm_token', $token]);
-            return $this->sendResponse(null, 'تم تعديل البيانات بنجاح');
+            return $this->sendResponse(null, __("links.editMsg"));
 
             // }
 
         } catch (\Exception$e) {
-            return $this->sendError($e->getMessage(), 'حدث خطأ ما');
+            return $this->convertErrorsToString($validator->messages());
         }
     }
     public function allNofications(Request $request)
@@ -168,9 +157,9 @@ class AuthController extends BaseController
         // dd($notifications);
 
         if ($notifications->count() > 0) {
-            return $this->sendResponse($notifications, 'كل الاشعارات');
+            return $this->sendResponse($notifications,  __("links.allNotifications"));
         } else {
-            return $this->successResponse('لا يوجد اشعارات حتى الان');
+            return $this->successResponse( __("links.noNotifications"));
         }
     }
 
@@ -207,12 +196,12 @@ class AuthController extends BaseController
 
 
 
-                return $this->sendResponse(new UserDataResource($user), 'تم تعديل البيانات بنجاح');
+                return $this->sendResponse(new UserDataResource($user),  __("links.editMsg"));
             } else {
                 return $this->sendError('لا يوجد مستخدم مطابق');
             }
         } catch (\Exception$e) {
-            return $this->sendError($e->getMessage(), 'حدث خطأ ما');
+            return $this->sendError($e->getMessage(),  __("links.generalError"));
         }
 
     }
@@ -238,13 +227,13 @@ class AuthController extends BaseController
                 }
                 $user->update($input);
 
-                return $this->sendResponse(new UserDataResource($user), 'تم تعديل الصورة بنجاح');
+                return $this->sendResponse(new UserDataResource($user),  __("links.editMsg"));
             } else {
                 return $this->sendError('لا يوجد مستخدم مطابق');
             }
 
         } catch (\Exception$e) {
-            return $this->sendError($e->getMessage(), 'حدث خطأ ما');
+            return $this->sendError($e->getMessage(),  __("links.generalError"));
         }
 
     }
