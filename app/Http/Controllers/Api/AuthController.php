@@ -103,7 +103,8 @@ class AuthController extends BaseController
                     $token = $request->device_token;
 
                     User::find($user_id)->update(['fcm_token'=>$token]);
-                    return $this->sendResponse(new UserDataResource($user), 'تم التسجيل بنجاح');
+
+                    return $this->sendResponse(new UserDataResource($user),  __("links.register"));
                 } elseif ($user->register_approved == 0) {
                     return $this->sendError('عذرا جارى تأكيد بياناتك');
                 }

@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Route;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
+Route::middleware("localization")->group(function () {
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 Route::get('testNotification', [TransactionController::class,'testNotification'])->name('testNotification');
@@ -34,7 +35,7 @@ Route::middleware('auth:api')->group( function () {
     Route::get('contact-us', [ContactController::class, 'getContact']);
     Route::post('send-msg', [ContactController::class, 'suggest']);
     Route::post('update-user-image', [AuthController::class, 'updateUserImage']);
-
+});
 
     //notifications APIs
     Route::get('list-notifications', [TransactionController::class, 'listNofications']);
