@@ -102,7 +102,7 @@ class TransactionController extends BaseController
     {
         // $user_id = auth()->user()->id;
         if(Auth::guard('api')->check()){
-dd(auth()->user());
+dd("not");
         }else{
             return $this->authCheck(' __("links.checkLog")');
         }
