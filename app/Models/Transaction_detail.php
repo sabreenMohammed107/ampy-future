@@ -29,7 +29,7 @@ class Transaction_detail extends Model
          $net= $this->attributes['basic_salary']+$this->attributes['settlements']
         +$this->attributes['allowances'] - ($this->attributes['taxes']+$this->attributes['insurance']) ;
 
-        echo number_format((float)$net, 2, '.', '');
+        return number_format((float)$net, 2, '.', '');
 
     }
 
