@@ -101,7 +101,7 @@ class TransactionController extends BaseController
     public function listNofications(Request $request)
     {
         $user_id =  $request->user()->id;
-
+dd($request->user());
         $notifications = FCMNotification::where('user_id', $user_id)->orderBy('id', 'desc')->limit(10)->get();
 
         // return NotificationsResourse::collection($notifications);
