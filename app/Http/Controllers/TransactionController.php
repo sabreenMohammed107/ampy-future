@@ -222,7 +222,7 @@ class TransactionController extends Controller
             $users = User_payrol_rule::whereHas('user', function ($q) {
                 $q->where('register_approved', 1);
             })->orderBy("created_at", "Desc")->pluck('user_id');
-dd( $users);
+dd($users);
             $ids=Transaction::whereIN('user_id', $users)->where('month_id', $request->get('month_id'))->get();
             foreach ($ids as $trans) {
 
