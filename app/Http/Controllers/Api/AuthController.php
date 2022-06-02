@@ -94,13 +94,16 @@ class AuthController extends BaseController
                     User::find($user_id)->update(['fcm_token'=>$token]);
                     return $this->sendResponse(new UserDataResource($user),  __("links.loginSuccess"));
                 } elseif ($user->register_approved == 0) {
-                    return $this->sendResponse(new UserDataResource($user),  __("links.loginApprived"));
+
+                    return $this->sendError( __("links.loginApprived"));
                 }
                 elseif ($user->register_approved == 2) {
-                    return $this->sendResponse(new UserDataResource($user),  __("links.loginblock"));
+
+                    return $this->sendError(  __("links.loginblock"));
                 }
                  else {
-                    return $this->sendResponse(new UserDataResource($user),  __("links.logindecline"));
+
+                    return $this->sendError(  __("links.logindecline"));
                 }
 
             } else {

@@ -26,8 +26,10 @@ class Transaction_detail extends Model
     public function getNetSalaryAttribute(){
 
 
-         return $this->attributes['basic_salary']+$this->attributes['settlements']
+         $net= $this->attributes['basic_salary']+$this->attributes['settlements']
         +$this->attributes['allowances'] - ($this->attributes['taxes']+$this->attributes['insurance']) ;
+
+        echo number_format((float)$net, 2, '.', '');
 
     }
 
