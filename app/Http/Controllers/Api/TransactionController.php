@@ -116,7 +116,8 @@ class TransactionController extends BaseController
     public function updateNotifications(Request $request)
     {
         if(Auth::guard('api')->check()){
-            dd(Auth::guard('api')->id());
+            dd(Auth::guard('api'));
+
             $user_id = auth()->user()->id;
 
             FCMNotification::where('user_id', $user_id)->update(['status' => 'seen']);
