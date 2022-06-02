@@ -53,12 +53,12 @@ class TransactionController extends BaseController
             // array_push($data, TransactionResource::collection($transactions));
             $data['transactions'] = TransactionResource::collection($transactions);
             if ($transactions && $transactions->count() > 0) {
-                return $this->sendResponse($data, ' __("links.allTransactions")');
+                return $this->sendResponse($data,  __("links.allTransactions"));
             } else {
-                return $this->sendResponse($data, ' __("links.noTransactions")');
+                return $this->sendResponse($data,  __("links.noTransactions"));
             }
         }else{
-            return $this->authCheck(' __("links.checkLog")');
+            return $this->authCheck(__("links.checkLog"));
 
         }
 
@@ -70,9 +70,9 @@ class TransactionController extends BaseController
     {
         if(Auth::guard('api')->check()){
             $user = Auth::guard('api')->user();
-            return $this->sendResponse(new UserDataResource($user), ' __("links.homeData")');
+            return $this->sendResponse(new UserDataResource($user),  __("links.homeData"));
         }else{
-            return $this->authCheck(' __("links.checkLog")');
+            return $this->authCheck( __("links.checkLog"));
 
         }
 
@@ -88,12 +88,12 @@ class TransactionController extends BaseController
             $row = Transaction::where('id', '=', $id)->first();
             $details = Transaction_detail::where('transaction_id', $id)->first();
             if ($details) {
-                return $this->sendResponse(new TransactionDataResource($details), '__("links.singleTrans")');
+                return $this->sendResponse(new TransactionDataResource($details), __("links.singleTrans"));
             } else {
-                return $this->sendError('__("links.noSingleTrans")');
+                return $this->sendError(__("links.noSingleTrans"));
             }
         } else {
-            return $this->authCheck(' __("links.checkLog")');
+            return $this->authCheck( __("links.checkLog"));
 
         }
 
@@ -108,7 +108,7 @@ class TransactionController extends BaseController
         // return NotificationsResourse::collection($notifications);
         return $this->sendResponse(NotificationsResourse::collection($notifications), ' __("links.allNotifications")');
     }else{
-        return $this->authCheck(' __("links.checkLog")');
+        return $this->authCheck(__("links.checkLog"));
 
     }
 
@@ -125,7 +125,7 @@ class TransactionController extends BaseController
 
             return $this->successResponse();
         }else{
-            return $this->authCheck(' __("links.checkLog")');
+            return $this->authCheck( __("links.checkLog"));
 
         }
 

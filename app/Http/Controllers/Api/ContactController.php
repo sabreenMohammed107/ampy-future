@@ -22,12 +22,12 @@ class ContactController extends BaseController
         if(Auth::guard('api')->check()){
             $company = Company::where('id', '=', 1)->first();
             if ($company) {
-                return $this->sendResponse(new CompanyResource($company), ' __("links.companyData")');
+                return $this->sendResponse(new CompanyResource($company),  __("links.companyData"));
             } else {
-                return $this->sendError(' __("links.companyDataError")');
+                return $this->sendError( __("links.companyDataError"));
             }
         }else{
-            return $this->authCheck(' __("links.checkLog")');
+            return $this->authCheck( __("links.checkLog"));
 
         }
 
@@ -39,9 +39,9 @@ class ContactController extends BaseController
     {
         if(Auth::guard('api')->check()){
             $faqs = Faq::all();
-            return $this->sendResponse(FaqResource::collection($faqs), ' __("links.faq")');
+            return $this->sendResponse(FaqResource::collection($faqs),  __("links.faq"));
         }else{
-            return $this->authCheck(' __("links.checkLog")');
+            return $this->authCheck( __("links.checkLog"));
 
         }
 
@@ -53,7 +53,7 @@ class ContactController extends BaseController
     {
 
             $policy = Policy_item::all();
-            return $this->sendResponse(Policy_itemResource::collection($policy), ' __("links.policy")');
+            return $this->sendResponse(Policy_itemResource::collection($policy),  __("links.policy"));
 
 
 
@@ -64,12 +64,12 @@ class ContactController extends BaseController
         if(Auth::guard('api')->check()){
             $company = Company::where('id', '=', 1)->first();
             if ($company) {
-                return $this->sendResponse(new aboutUsResource($company), ' __("links.companyData")');
+                return $this->sendResponse(new aboutUsResource($company),  __("links.companyData"));
             } else {
-                return $this->sendError(' __("links.companyDataError") ');
+                return $this->sendError( __("links.companyDataError") );
             }
         }else{
-            return $this->authCheck(' __("links.checkLog")');
+            return $this->authCheck( __("links.checkLog"));
 
         }
 
@@ -97,15 +97,15 @@ class ContactController extends BaseController
                     'suggest_date' => Carbon::now(),
                 ];
                 Message::create($data);
-                return $this->successResponse(' __("links.sendSuccess")');
+                return $this->successResponse( __("links.sendSuccess"));
 
             } catch (\Exception$ex) {
-                return $this->sendError($ex->getMessage(), ' __("links.sendError")');
+                return $this->sendError($ex->getMessage(),  __("links.sendError"));
             }
 
 
         }else{
-            return $this->authCheck(' __("links.checkLog")');
+            return $this->authCheck( __("links.checkLog"));
 
         }
 
