@@ -101,7 +101,11 @@ class TransactionController extends BaseController
     public function listNofications(Request $request)
     {
         // $user_id = auth()->user()->id;
-dd(Auth::user());
+        if(Auth::guard('api')->check()){
+dd(auth()->user());
+        }else{
+            return $this->authCheck(' __("links.checkLog")');
+        }
         // $notifications = FCMNotification::where('user_id', $user_id)->orderBy('id', 'desc')->limit(10)->get();
 
         // return NotificationsResourse::collection($notifications);
